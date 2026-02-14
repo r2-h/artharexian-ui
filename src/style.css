@@ -1,35 +1,58 @@
 :root {
   /* Цвета для компонентов */
-  --color-danger: #oklch(0.577 0.245 27.325);
+  --color-danger: oklch(0.577 0.245 27.325);
   --color-warning: #ff9800;
   --color-success: #4caf50;
-  --color-primary: #2563eb;
+
   --color-accent: #7159da;
   --color-info: #2196f3;
-  --color-text-muted: #6b7280;
-  --color-text-secondary: #2b2b2b;
-  --color-button: #252629;
 
-  --background: light-dark(oklch(0.985 0 0), oklch(0.145 0 0));
-  --foreground: light-dark(oklch(0.145 0 0), oklch(0.985 0 0));
-  --card: light-dark(oklch(0.985 0 0), oklch(0.205 0 0));
-  --card-foreground: light-dark(oklch(0.145 0 0), oklch(0.985 0 0));
-  --popover: light-dark(oklch(0.985 0 0), oklch(0.205 0 0));
-  --popover-foreground: light-dark(oklch(0.145 0 0), oklch(0.985 0 0));
-  --primary: light-dark(oklch(0.205 0.1 230), oklch(0.65 0.18 230));
-  --primary-foreground: light-dark(oklch(0.985 0 0), oklch(0.985 0 0));
-  --secondary: light-dark(oklch(0.922 0 0), oklch(0.3 0 0));
-  --secondary-foreground: light-dark(oklch(0.205 0 0), oklch(0.985 0 0));
-  --muted: light-dark(oklch(0.922 0 0), oklch(0.3 0 0));
-  --muted-foreground: light-dark(oklch(0.556 0 0), oklch(0.65 0 0));
-  --accent: light-dark(oklch(0.922 0 0), oklch(0.3 0 0));
-  --accent-foreground: light-dark(oklch(0.205 0 0), oklch(0.985 0 0));
-  --destructive: light-dark(
-    oklch(0.577 0.245 27.325),
-    oklch(0.577 0.245 27.325)
+  --color-neutral-20: oklch(0.985 0 0);
+  --color-neutral-25: oklch(0.922 0 0);
+  --color-neutral-50: oklch(0.65 0 0);
+  --color-neutral-55: oklch(0.556 0 0);
+  --color-neutral-70: oklch(0.3 0 0);
+  --color-neutral-80: oklch(0.205 0 0);
+  --color-neutral-90: oklch(0.145 0 0);
+
+  --color-blue-50: oklch(0.65 0.18 230);
+  --color-blue-80: oklch(0.205 0.1 230);
+
+  /* theme */
+  --background: light-dark(var(--color-neutral-20), var(--color-neutral-90));
+  --foreground: light-dark(var(--color-neutral-90), var(--color-neutral-20));
+  --card: light-dark(var(--color-neutral-20), var(--color-neutral-90));
+  --card-foreground: light-dark(
+    var(--color-neutral-90),
+    var(--color-neutral-20)
   );
-  --border: light-dark(oklch(0.922 0 0), oklch(0.3 0 0));
-  --input: light-dark(oklch(0.922 0 0), oklch(0.3 0 0));
+  --popover: light-dark(var(--color-neutral-20), var(--color-neutral-90));
+  --popover-foreground: light-dark(
+    var(--color-neutral-90),
+    var(--color-neutral-20)
+  );
+  --primary: light-dark(var(--color-blue-80), var(--color-blue-50));
+  --primary-foreground: light-dark(
+    var(--color-neutral-20),
+    var(--color-neutral-20)
+  );
+  --secondary: light-dark(var(--color-neutral-25), var(--color-neutral-70));
+  --secondary-foreground: light-dark(
+    var(--color-neutral-90),
+    var(--color-neutral-20)
+  );
+  --muted: light-dark(var(--color-neutral-25), var(--color-neutral-70));
+  --muted-foreground: light-dark(
+    var(--color-neutral-55),
+    var(--color-neutral-50)
+  );
+  --accent: light-dark(var(--color-neutral-25), var(--color-neutral-70));
+  --accent-foreground: light-dark(
+    var(--color-neutral-90),
+    var(--color-neutral-20)
+  );
+  --border: light-dark(var(--color-neutral-25), var(--color-neutral-70));
+  --input: light-dark(var(--color-neutral-25), var(--color-neutral-70));
 
   &[data-theme="light"] {
     color-scheme: light;
@@ -46,10 +69,8 @@
 }
 
 html {
-  color-scheme: dark light;
+  color-scheme: light dark;
   scroll-behavior: smooth;
-  margin: 0;
-  padding: 0;
 }
 
 body {
@@ -59,6 +80,8 @@ body {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+  margin: 0;
+  padding: 0;
 }
 
 img,
@@ -77,12 +100,13 @@ select {
 }
 
 :disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   pointer-events: none;
 }
 [aria-busy="true"] {
-  cursor: progress;
+  opacity: 0.5;
   pointer-events: none;
+  cursor: progress;
 }
 
 a {

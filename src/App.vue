@@ -11,13 +11,15 @@ import ThemeToggle from "./components/ThemeToggle.vue";
     </header>
     <main>
       <ButtonBase />
+      <ButtonBase variant="danger" />
+      <ButtonBase variant="accent" />
+      <ButtonBase variant="ghost" />
     </main>
   </div>
 </template>
 
 <style scoped>
 .app-container {
-  min-height: 100vh;
   padding: 20px;
 }
 
@@ -26,10 +28,5 @@ import ThemeToggle from "./components/ThemeToggle.vue";
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-}
-
-.app-header h1 {
-  margin: 0;
-  color: var(--foreground);
 }
 </style>

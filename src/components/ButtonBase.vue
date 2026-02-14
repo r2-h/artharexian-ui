@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: "button",
   variant: "primary",
 });
-
+ //
 const className = computed(() => ({
   btn: true,
   "btn-accent": props.variant === "accent",
@@ -61,17 +61,12 @@ const className = computed(() => ({
 }
 
 .btn-danger {
-  background: var(--destructive);
+  background: var(--color-danger);
   color: var(--primary-foreground);
 }
 
 .btn:hover:not(:disabled) {
   opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.btn:active:not(:disabled) {
-  transform: translateY(0);
 }
 
 .btn:disabled {

@@ -1,54 +1,36 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { initTheme } from "../composables/useTheme";
-import useThemeComposable from "../composables/useTheme";
+import useTheme from "../composables/useTheme";
 
-onMounted(() => initTheme());
-
-const themeState = useThemeComposable();
+const { currentTheme, toggleTheme } = useTheme();
 </script>
-//
+
 <template>
-  <div class="theme-toggle">
-    <button
-      @click="themeState.toggleTheme()"
-      :aria-label="`Switch to ${themeState.currentTheme.value === 'dark' ? 'light' : 'dark'} theme`"
-      class="theme-toggle-btn"
-    >
-      <span v-if="themeState.currentTheme.value === 'dark'" class="theme-icon">
-        🌙
-      </span>
-      <span v-else class="theme-icon">☀️</span>
-    </button>
-  </div>
+  <button
+    @click="toggleTheme()"
+    :aria-label="`Switch to ${currentTheme === 'dark' ? 'light' : 'dark'} theme`"
+    class="theme-toggle-btn"
+  >
+    <span v-if="currentTheme === 'dark'"> 🌙 </span>
+    <span v-else>☀️</span>
+  </button>
 </template>
 
 <style scoped>
-.theme-toggle {
-  display: inline-block;
-}
-
 .theme-toggle-btn {
   background: var(--accent);
-  color: var(--accent-foreground);
-  border: none;
   width: 40px;
-  height: 40px;
+  aspect-ratio: 1;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 1.1rem;
+
   transition: all 0.3s ease;
-}
-
-.theme-toggle-btn:hover {
-  transform: scale(1.1);
-  background: var(--primary);
-}
-
-.theme-icon {
-  pointer-events: none;
+  &:hover {
+    transform: scale(1.1);
+    background: var(--primary);
+  }
 }
 </style>
