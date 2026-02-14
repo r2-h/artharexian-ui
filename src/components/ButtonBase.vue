@@ -38,25 +38,45 @@ const className = computed(() => ({
   font-size: 1rem;
   cursor: pointer;
   border: 0;
-  color: #fff;
+  color: var(--primary-foreground);
+  transition: all 0.2s ease;
 }
 .btn-accent {
-  background: var(--color-accent);
+  background: var(--accent);
 }
 
 .btn-primary {
-  background: var(--color-primary);
+  background: var(--primary);
 }
 
 .btn-ghost {
   background: transparent;
-  outline: 1px solid var(--color-border);
-  color: var(--color-button);
+  border: 1px solid var(--border);
+  color: var(--foreground);
   font-weight: 500;
 }
 
+.btn-ghost:hover {
+  background: var(--muted);
+}
+
 .btn-danger {
-  background: var(--color-danger);
+  background: var(--destructive);
+  color: var(--primary-foreground);
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .pending {
