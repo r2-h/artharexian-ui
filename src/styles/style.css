@@ -1,3 +1,4 @@
+@import 'tailwindcss';
 @layer theme, base, components, utilities;
 
 @layer theme {
@@ -351,13 +352,13 @@
     --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
     --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md:
-      0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg:
-      0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl:
-      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+    --shadow-raised: 2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight);
+    --shadow-inset: inset 2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight);
 
     --inset-shadow-2xs: inset 0 1px rgb(0 0 0 / 0.05);
     --inset-shadow-xs: inset 0 1px 1px rgb(0 0 0 / 0.05);
@@ -373,14 +374,11 @@
     --text-shadow-2xs: 0px 1px 0px rgb(0 0 0 / 0.15);
     --text-shadow-xs: 0px 1px 1px rgb(0 0 0 / 0.2);
     --text-shadow-sm:
-      0px 1px 0px rgb(0 0 0 / 0.075), 0px 1px 1px rgb(0 0 0 / 0.075),
-      0px 2px 2px rgb(0 0 0 / 0.075);
+      0px 1px 0px rgb(0 0 0 / 0.075), 0px 1px 1px rgb(0 0 0 / 0.075), 0px 2px 2px rgb(0 0 0 / 0.075);
     --text-shadow-md:
-      0px 1px 1px rgb(0 0 0 / 0.1), 0px 1px 2px rgb(0 0 0 / 0.1),
-      0px 2px 4px rgb(0 0 0 / 0.1);
+      0px 1px 1px rgb(0 0 0 / 0.1), 0px 1px 2px rgb(0 0 0 / 0.1), 0px 2px 4px rgb(0 0 0 / 0.1);
     --text-shadow-lg:
-      0px 1px 2px rgb(0 0 0 / 0.1), 0px 3px 2px rgb(0 0 0 / 0.1),
-      0px 4px 8px rgb(0 0 0 / 0.1);
+      0px 1px 2px rgb(0 0 0 / 0.1), 0px 3px 2px rgb(0 0 0 / 0.1), 0px 4px 8px rgb(0 0 0 / 0.1);
 
     --blur-xs: 4px;
     --blur-sm: 8px;
@@ -401,41 +399,27 @@
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
-    --color-danger: oklch(0.577 0.245 27.325);
-    --color-warning: #ff9800;
-    --color-success: #4caf50;
-    --color-accent: #7159da;
-    --color-info: #2196f3;
+    --color-danger: var(--color-red-600);
+    --color-warning: var(--color-orange-600);
+    --color-success: var(--color-green-600);
+    --color-info: var(--color-sky-600);
+    --color-highlight: white;
+    --color-shadow: rgb(0 0 0 / 0.15);
 
     --background: light-dark(var(--color-zinc-200), var(--color-zinc-900));
     --foreground: light-dark(var(--color-zinc-700), var(--color-zinc-100));
     --card: light-dark(var(--color-neutral-200), var(--color-neutral-900));
-    --card-foreground: light-dark(
-      var(--color-neutral-900),
-      var(--color-neutral-200)
-    );
+    --card-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --popover: light-dark(var(--color-neutral-200), var(--color-neutral-900));
-    --popover-foreground: light-dark(
-      var(--color-neutral-900),
-      var(--color-neutral-200)
-    );
+    --popover-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --primary: light-dark(var(--color-indigo-600), var(--color-indigo-400));
     --primary-foreground: var(--color-neutral-200);
     --secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-    --secondary-foreground: light-dark(
-      var(--color-neutral-900),
-      var(--color-neutral-200)
-    );
-    --muted: light-dark(var(--color-neutral-25), var(--color-neutral-700));
-    --muted-foreground: light-dark(
-      var(--color-neutral-50),
-      var(--color-neutral-500)
-    );
+    --secondary-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
+    --muted: light-dark(var(--color-zinc-300), var(--color-zinc-700));
+    --muted-foreground: light-dark(var(--color-zinc-600), var(--color-zinc-500));
     --accent: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-    --accent-foreground: light-dark(
-      var(--color-neutral-900),
-      var(--color-neutral-200)
-    );
+    --accent-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --border: light-dark(var(--color-neutral-300), var(--color-neutral-700));
     --input: light-dark(var(--color-neutral-300), var(--color-neutral-700));
 
@@ -485,10 +469,10 @@
 
 @layer base {
   :root {
-    &[data-theme="light"] {
+    &[data-theme='light'] {
       color-scheme: light;
     }
-    &[data-theme="dark"] {
+    &[data-theme='dark'] {
       color-scheme: dark;
     }
 
@@ -517,7 +501,7 @@
   }
 
   :disabled,
-  [aria-busy="true"] {
+  [aria-busy='true'] {
     opacity: 0.5;
     pointer-events: none;
   }
@@ -551,8 +535,8 @@
   }
 
   input,
-  textarea,
   button,
+  textarea,
   select {
     font: inherit;
   }

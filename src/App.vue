@@ -9,16 +9,22 @@ import ThemeToggle from './components/ThemeToggle.vue'
       <h1>UI Library Demo</h1>
       <ThemeToggle />
     </header>
-    <main>
+    <main class="wrapper">
+      <ButtonBase disabled/>
       <ButtonBase />
       <ButtonBase variant="danger" />
-      <ButtonBase variant="accent" />
       <ButtonBase variant="ghost" />
+      <ButtonBase variant="accent" />
+      <input type="text" />
     </main>
   </div>
 </template>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  gap: 1rem;
+}
 .app-container {
   padding: 20px;
 }
