@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ButtonBase from "./components/ButtonBase.vue";
-import ThemeToggle from "./components/ThemeToggle.vue";
+import ButtonBase from './components/ButtonBase.vue'
+import ThemeToggle from './components/ThemeToggle.vue'
 </script>
 
 <template>
