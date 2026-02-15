@@ -1,26 +1,27 @@
 <script setup lang="ts">
 import { type ButtonHTMLAttributes, computed } from 'vue'
 
-type ButtonVariant = 'accent' | 'primary' | 'ghost' | 'danger'
+type ButtonVariant = 'primary' | 'default' | 'danger'
+type ButtonShape = 'radius-default' | 'radius-circle'
 
 type Props = {
   isPending?: boolean
   variant?: ButtonVariant
+  shape?: ButtonShape
   type?: ButtonHTMLAttributes['type']
   disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'button',
-  variant: 'primary',
+  variant: 'default',
+  shape: 'radius-default',
 })
 
 const className = computed(() => ({
   btn: true,
-  'btn-accent': props.variant === 'accent',
-  'btn-primary': props.variant === 'primary',
-  'btn-ghost': props.variant === 'ghost',
-  'btn-danger': props.variant === 'danger',
+  [props.shape]: true,
+  [props.variant]: true,
   pending: props.isPending,
 }))
 </script>
@@ -34,16 +35,20 @@ const className = computed(() => ({
 <style scoped>
 .btn {
   display: inline-flex;
-  font: 500;
+  font-weight: 500;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-xl);
   cursor: pointer;
-  border: 0.3rem solid var(--background);
-  height: 4.8rem;
-  padding-inline: 1.6rem;
+  border: 0.3rem solid var(--color-border);
   background: var(--background);
   box-shadow: var(--shadow-raised);
+  transition:
+    box-shadow 200ms ease-in-out,
+    scale 200ms ease-in-out;
+  &:active {
+    box-shadow: var(--shadow-inset);
+    scale: 97%;
+  }
   &:focus-visible {
     outline: 0.2rem solid var(--foreground);
     outline-offset: 0.2rem;
@@ -52,33 +57,43 @@ const className = computed(() => ({
     opacity: 0.85;
   }
 }
-.btn-accent {
-  background: var(--accent);
+
+.radius-default {
+  border-radius: var(--radius-xl);
+  padding-inline: 1.6rem;
+  aspect-ratio: 1;
+  height: 4.8rem;
+}
+.radius-circle {
+  border-radius: 5rem;
+  padding: 1rem;
+  min-width: 5rem;
+  aspect-ratio: 1;
 }
 
-.btn-primary {
+.primary {
   color: var(--primary);
   background-image: linear-gradient(
     to top left,
-    color-mix(in srgb, var(--primary), transparent 95%),
-    color-mix(in srgb, var(--primary), transparent 75%)
+    color-mix(in oklch, var(--primary), transparent 97%),
+    color-mix(in oklch, var(--primary), transparent 78%)
   );
 }
 
-.btn-ghost {
+.default {
   background-image: linear-gradient(
     to top left,
-    color-mix(in srgb, var(--background), transparent 95%),
-    color-mix(in srgb, var(--color-highlight), transparent 75%)
+    color-mix(in oklch, var(--muted), transparent 97%),
+    color-mix(in oklch, var(--muted), transparent 5%)
   );
 }
 
-.btn-danger {
+.danger {
   color: var(--color-danger);
   background-image: linear-gradient(
     to top left,
-    color-mix(in srgb, var(--color-danger), transparent 95%),
-    color-mix(in srgb, var(--color-danger), transparent 75%)
+    color-mix(in oklch, var(--color-danger), transparent 97%),
+    color-mix(in oklch, var(--color-danger), transparent 78%)
   );
 }
 </style>

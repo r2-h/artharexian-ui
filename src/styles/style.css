@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@14..36,300;14..36,400;14..36,500;14..36,600;14..36,700&display=swap');
 @import 'tailwindcss';
 @layer theme, base, components, utilities;
 
@@ -357,8 +358,13 @@
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
-    --shadow-raised: 2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight);
-    --shadow-inset: inset 2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight);
+    --shadow-raised:
+      2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight),
+      inset 0px 0px 0px var(--color-shadow), inset 0px 0px 0px var(--color-highlight),
+      inset 1px 1px 2px var(--color-edge);
+    --shadow-inset:
+      1px 1px 2px var(--color-shadow), -1px -1px 2px var(--color-highlight),
+      inset 2px 2px 6px var(--color-shadow), inset -2px -2px 6px var(--color-highlight);
 
     --inset-shadow-2xs: inset 0 1px rgb(0 0 0 / 0.05);
     --inset-shadow-xs: inset 0 1px 1px rgb(0 0 0 / 0.05);
@@ -396,36 +402,30 @@
 
     --aspect-video: 16 / 9;
 
-    --default-transition-duration: 150ms;
-    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-
-    --color-danger: var(--color-red-600);
-    --color-warning: var(--color-orange-600);
-    --color-success: var(--color-green-600);
-    --color-info: var(--color-sky-600);
-    --color-highlight: white;
-    --color-shadow: rgb(0 0 0 / 0.15);
-
     --background: light-dark(var(--color-zinc-200), var(--color-zinc-900));
     --foreground: light-dark(var(--color-zinc-700), var(--color-zinc-100));
+    --color-shadow: light-dark(oklch(0% 0 0 / 0.2), oklch(0 0 0 / 0.75));
+    --color-edge: light-dark(oklch(100% 0 0 / 0.1), oklch(100% 0 0 / 0.1));
+    --color-highlight: light-dark(white, oklch(100% 0 0 / 0.2));
+    --color-border: light-dark(var(--color-zinc-100), var(--color-zinc-950));
+    --color-danger: light-dark(oklch(from var(--color-red-600) l 0.2 h), var(--color-red-400));
+    --color-warning: light-dark(var(--color-orange-600), var(--color-orange-400));
+    --color-success: light-dark(var(--color-green-600), var(--color-green-400));
+    --color-info: light-dark(var(--color-sky-600), var(--color-sky-400));
     --card: light-dark(var(--color-neutral-200), var(--color-neutral-900));
     --card-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --popover: light-dark(var(--color-neutral-200), var(--color-neutral-900));
     --popover-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
-    --primary: light-dark(var(--color-indigo-600), var(--color-indigo-400));
+    --primary: light-dark(oklch(from var(--color-indigo-600) l 0.2 h), var(--color-indigo-400));
     --primary-foreground: var(--color-neutral-200);
     --secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
     --secondary-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --muted: light-dark(var(--color-zinc-300), var(--color-zinc-700));
-    --muted-foreground: light-dark(var(--color-zinc-600), var(--color-zinc-500));
-    --accent: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-    --accent-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
+    --muted-foreground: light-dark(var(--color-zinc-600), var(--color-zinc-400));
+    /* --accent: light-dark(var(--color-neutral-300), var(--color-neutral-700));
+    --accent-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200)); */
     --border: light-dark(var(--color-neutral-300), var(--color-neutral-700));
     --input: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-
-    --ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
     --animate-spin: spin 1s linear infinite;
     --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
@@ -479,6 +479,7 @@
     color-scheme: light dark;
     scroll-behavior: smooth;
     font-size: 10px;
+    font-family: 'DM Sans', sans-serif;
   }
 
   body {
@@ -553,5 +554,11 @@
   ul,
   menu {
     list-style: none;
+  }
+}
+
+@layer utilities {
+  @function --transparent(--color <color>, --alpha type(<number> | <percentage>)) returns <color> {
+    result: oklch(from var(--color) l c h / var(--alpha));
   }
 }

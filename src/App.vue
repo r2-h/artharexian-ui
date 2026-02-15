@@ -10,11 +10,10 @@ import ThemeToggle from './components/ThemeToggle.vue'
       <ThemeToggle />
     </header>
     <main class="wrapper">
-      <ButtonBase disabled/>
       <ButtonBase />
       <ButtonBase variant="danger" />
-      <ButtonBase variant="ghost" />
-      <ButtonBase variant="accent" />
+      <ButtonBase variant="primary" />
+
       <input type="text" />
     </main>
   </div>
