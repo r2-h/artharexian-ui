@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: "button",
   variant: "primary",
 });
- //
+
 const className = computed(() => ({
   btn: true,
   "btn-accent": props.variant === "accent",
@@ -33,13 +33,19 @@ const className = computed(() => ({
 
 <style scoped>
 .btn {
-  padding: 0.7rem 1.4rem;
-  border-radius: 6px;
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+
   cursor: pointer;
-  border: 0;
   color: var(--primary-foreground);
   transition: all 0.2s ease;
+  height: 4.8rem;
+  padding-inline: 1.6rem;
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
 }
 .btn-accent {
   background: var(--accent);
@@ -50,31 +56,17 @@ const className = computed(() => ({
 }
 
 .btn-ghost {
-  background: transparent;
+  background-color: transparent;
   border: 1px solid var(--border);
   color: var(--foreground);
   font-weight: 500;
-}
-
-.btn-ghost:hover {
-  background: var(--muted);
+  &:hover {
+    background-color: var(--muted);
+  }
 }
 
 .btn-danger {
   background: var(--color-danger);
   color: var(--primary-foreground);
-}
-
-.btn:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.pending {
-  cursor: progress;
 }
 </style>
