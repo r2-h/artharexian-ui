@@ -1,36 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const isPressed = ref(false)
+const modelValue = defineModel({ default: false })
 </script>
 
 <template>
-  <label class="switch">
-    <input type="checkbox" v-model="isPressed" class="input" />
-    <div class="slider">
+  <label class="wrapper">
+    <input type="checkbox" v-model="modelValue" />
+    <div class="switch">
       <div class="thumb" />
     </div>
+    <slot />
   </label>
 </template>
 
 <style scoped>
-.switch {
+.wrapper {
   display: inline-block;
   cursor: pointer;
 }
 
-.input {
-  width: 0px;
-  height: 0px;
-  &:focus-visible + .slider {
-    outline: 0.2rem solid var(--foreground, #000);
+input {
+  appearance: none;
+  &:focus-visible + .switch {
+    outline: 0.2rem solid var(--foreground);
     outline-offset: 0.4rem;
   }
-  &:checked + .slider {
+  &:checked + .switch {
     background-color: var(--primary);
     border: 0.1rem solid var(--primary);
   }
-  &:checked + .slider .thumb {
+  &:checked + .switch .thumb {
     transform: translateX(2.6rem);
     &::before {
       background-color: var(--primary);
@@ -38,7 +36,7 @@ const isPressed = ref(false)
   }
 }
 
-.slider {
+.switch {
   height: 2.2rem;
   width: 4.8rem;
   border-radius: calc(1px * Infinity);

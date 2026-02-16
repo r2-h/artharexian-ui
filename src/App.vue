@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import AlertIcon from './assets/AlertIcon.vue'
 import ButtonBase from './components/ButtonBase.vue'
+import CheckboxBase from './components/CheckboxBase.vue'
 import SwitchBase from './components/SwitchBase.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
 import CardBase from './components/card-base/CardBase.vue'
@@ -23,7 +25,8 @@ import CardTitle from './components/card-base/CardTitle.vue'
         <ButtonBase disabled />
         <ButtonBase />
       </div>
-      <SwitchBase></SwitchBase>
+      <SwitchBase />
+      <CheckboxBase />
 
       <div style="margin: 2.4rem">
         <CardBase>
