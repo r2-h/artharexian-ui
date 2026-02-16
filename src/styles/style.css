@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@14..36,300;14..36,400;14..36,500;14..36,600;14..36,700&display=swap');
-@import 'tailwindcss';
+/* @import 'tailwindcss'; */
 @layer theme, base, components, utilities;
 
 @layer theme {
@@ -292,31 +292,13 @@
     --container-7xl: 80rem;
 
     --text-xs: 1.2rem;
-    --text-xs--line-height: calc(1 / 1.2);
     --text-sm: 1.4rem;
-    --text-sm--line-height: calc(1.25 / 1.4);
     --text-base: 1.6rem;
-    --text-base--line-height: calc(1.5 / 1.6);
     --text-lg: 1.8rem;
-    --text-lg--line-height: calc(1.75 / 1.8);
     --text-xl: 2rem;
-    --text-xl--line-height: calc(1.75 / 2);
     --text-2xl: 2.4rem;
-    --text-2xl--line-height: calc(2 / 2.4);
     --text-3xl: 3rem;
-    --text-3xl--line-height: calc(2.25 / 3);
     --text-4xl: 3.6rem;
-    --text-4xl--line-height: calc(2.5 / 3.6);
-    --text-5xl: 4.8rem;
-    --text-5xl--line-height: 1;
-    --text-6xl: 6rem;
-    --text-6xl--line-height: 1;
-    --text-7xl: 7.2rem;
-    --text-7xl--line-height: 1;
-    --text-8xl: 9.6rem;
-    --text-8xl--line-height: 1;
-    --text-9xl: 12.8rem;
-    --text-9xl--line-height: 1;
 
     --font-weight-thin: 100;
     --font-weight-extralight: 200;
@@ -328,6 +310,7 @@
     --font-weight-extrabold: 800;
     --font-weight-black: 900;
 
+    /* letter-spacing */
     --tracking-tighter: -0.05em;
     --tracking-tight: -0.025em;
     --tracking-normal: 0em;
@@ -335,6 +318,7 @@
     --tracking-wider: 0.05em;
     --tracking-widest: 0.1em;
 
+    /* line-height */
     --leading-tight: 1.25;
     --leading-snug: 1.375;
     --leading-normal: 1.5;
@@ -503,8 +487,9 @@
 
   :disabled,
   [aria-busy='true'] {
-    opacity: 0.5;
     pointer-events: none;
+    color: var(--color-neutral-500);
+    opacity: 0.45;
   }
 
   h1,
@@ -516,6 +501,15 @@
     text-wrap: balance;
     font-size: inherit;
     font-weight: inherit;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+  h3 {
+    font-size: var(--text-lg);
   }
 
   textarea {
@@ -555,10 +549,37 @@
   menu {
     list-style: none;
   }
-}
 
-@layer utilities {
-  @function --transparent(--color <color>, --alpha type(<number> | <percentage>)) returns <color> {
-    result: oklch(from var(--color) l c h / var(--alpha));
+  .font-xs {
+    font-size: var(--text-xs);
+    /* line-height: var(--leading-relaxed); */
+  }
+  .font-sm {
+    font-size: var(--text-sm);
+    /* line-height: var(--leading-normal); */
+  }
+  .font-base {
+    font-size: var(--text-base);
+    /* line-height: var(--leading-normal); */
+  }
+  .font-lg {
+    font-size: var(--text-lg);
+    /* line-height: var(--leading-normal); */
+  }
+  .font-xl {
+    font-size: var(--text-xl);
+    /* line-height: var(--leading-snug); */
+  }
+  .font-2xl {
+    font-size: var(--text-2xl);
+    /* line-height: var(--leading-tight); */
+  }
+  .font-3xl {
+    font-size: var(--text-3xl);
+    /* line-height: 1; */
+  }
+  .font-4xl {
+    font-size: var(--text-4xl);
+    /* line-height: 1; */
   }
 }

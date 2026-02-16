@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ButtonHTMLAttributes, computed } from 'vue'
+import { type ButtonHTMLAttributes } from 'vue'
 
 type ButtonVariant = 'primary' | 'default' | 'danger'
 type ButtonShape = 'radius-default' | 'radius-circle'
@@ -10,24 +10,19 @@ type Props = {
   shape?: ButtonShape
   type?: ButtonHTMLAttributes['type']
   disabled?: boolean
+  as?: 'button' | 'a'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'button',
   variant: 'default',
   shape: 'radius-default',
+  as: 'button',
 })
-
-const className = computed(() => ({
-  btn: true,
-  [props.shape]: true,
-  [props.variant]: true,
-  pending: props.isPending,
-}))
 </script>
 
 <template>
-  <button :class="className" :type="type" :disabled="isPending || disabled">
+  <button :as :class="['btn', shape, variant]" :type :disabled :aria-busy="isPending">
     <slot>button</slot>
   </button>
 </template>
@@ -35,6 +30,7 @@ const className = computed(() => ({
 <style scoped>
 .btn {
   display: inline-flex;
+  text-wrap: nowrap;
   font-weight: 500;
   align-items: center;
   justify-content: center;
