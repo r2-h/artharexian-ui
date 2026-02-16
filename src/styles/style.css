@@ -502,15 +502,6 @@
     font-size: inherit;
     font-weight: inherit;
   }
-  h1 {
-    font-size: var(--text-2xl);
-  }
-  h2 {
-    font-size: var(--text-xl);
-  }
-  h3 {
-    font-size: var(--text-lg);
-  }
 
   textarea {
     resize: vertical;
@@ -548,6 +539,18 @@
   ul,
   menu {
     list-style: none;
+  }
+}
+
+@layer components {
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+  h3 {
+    font-size: var(--text-lg);
   }
 
   .font-xs {

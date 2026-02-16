@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import ButtonBase from './components/ButtonBase.vue'
+import SwitchBase from './components/SwitchBase.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
-import CardBase from './components/v-card/CardBase.vue'
-import CardContent from './components/v-card/CardContent.vue'
-import CardDescription from './components/v-card/CardDescription.vue'
-import CardFooter from './components/v-card/CardFooter.vue'
-import CardHeader from './components/v-card/CardHeader.vue'
-import CardTitle from './components/v-card/CardTitle.vue'
+import CardBase from './components/card-base/CardBase.vue'
+import CardContent from './components/card-base/CardContent.vue'
+import CardDescription from './components/card-base/CardDescription.vue'
+import CardFooter from './components/card-base/CardFooter.vue'
+import CardHeader from './components/card-base/CardHeader.vue'
+import CardTitle from './components/card-base/CardTitle.vue'
 </script>
 
 <template>
@@ -22,6 +23,7 @@ import CardTitle from './components/v-card/CardTitle.vue'
         <ButtonBase disabled />
         <ButtonBase />
       </div>
+      <SwitchBase></SwitchBase>
 
       <div style="margin: 2.4rem">
         <CardBase>
