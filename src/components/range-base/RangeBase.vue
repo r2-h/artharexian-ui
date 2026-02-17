@@ -1,62 +1,69 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-const props = withDefaults(
-  defineProps<{
-    thumbSize?: number
-    min?: number
-    max?: number
-    variant?: 'default' | 'secondary'
-  }>(),
-  {
-    variant: 'default',
-    thumbSize: 2,
-    min: 0,
-    max: 100,
-  },
-)
+import { useVars } from '../../composables/useWars'
+import { cssSizeToNumber } from '../../utils/cssSizeToNumber'
+
+const {
+  variant = 'default',
+  min = 0,
+  max = 100,
+  showThumb = true,
+  vars = { thumb: { size: '2rem' } },
+} = defineProps<{
+  min?: number
+  max?: number
+  variant?: 'default' | 'secondary'
+  showThumb?: boolean
+  cls?: { input?: string; progress?: string }
+  vars?: { progress?: { height?: string }; thumb?: { size?: string } }
+}>()
 
 const rangeValue = ref(50)
 
-const trackStyle = computed(() => {
-  const percent = (rangeValue.value - props.min) / (props.max - props.min)
-  const thumbOffset = (0.5 - percent) * props.thumbSize
-  const gradientBorder = `calc(${percent * 100}% + ${thumbOffset}rem)`
+const progressPercent = computed(() => {
+  const percent = ((rangeValue.value - min) / (max - min)) * 100
+  const thumbOffset = (0.5 - percent / 100) * cssSizeToNumber(vars.thumb?.size)
+  return showThumb ? `calc(${percent}% + ${thumbOffset}rem)` : `${percent}%`
+})
 
+const progressBackground = computed(() => {
   let gradientColor
-  if (props.variant === 'secondary')
-    gradientColor = { start: 'var(--muted)', end: `color-mix(in oklch, var(--muted), white 25%)` }
+  if (variant === 'secondary')
+    gradientColor = {
+      start: 'var(--muted)',
+      end: `color-mix(in oklch, var(--muted), transparent 70%)`,
+    }
   else
     gradientColor = {
       start: 'var(--primary)',
-      end: `color-mix(in oklch, var(--primary), white 25%)`,
+      end: `color-mix(in oklch, var(--primary), transparent 70%)`,
     }
 
-  return `linear-gradient(
-    to right, 
-    ${gradientColor.start} 0%,
-    ${gradientColor.end} ${gradientBorder},
-    transparent ${gradientBorder},
-    transparent 100%
-  )`
+  return `linear-gradient(to left, ${gradientColor.start}, ${gradientColor.end})`
 })
 
-const outsetWidth = computed(() => String(Math.abs(props.max)).length)
+const thumbSize = computed(() => (showThumb ? vars.thumb?.size : '0rem'))
+
+const varsStyle = useVars('range', [vars])
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" :style="varsStyle">
     <div class="wrapper">
+      <div :class="['progress', cls?.progress]" :style="{ width: progressPercent }" />
+
       <input
         v-model="rangeValue"
         type="range"
         :min="min"
         :max="max"
-        class="range"
-        :style="{ background: trackStyle }"
+        :class="['range-input', { 'hide-thumb': !showThumb }, cls?.input]"
       />
     </div>
-    <output class="output">{{ rangeValue }}</output>
+    <output class="output" :style="{ minWidth: `${String(max).length}ch` }">
+      {{ rangeValue }}
+    </output>
   </div>
 </template>
 
@@ -70,54 +77,68 @@ const outsetWidth = computed(() => String(Math.abs(props.max)).length)
 .wrapper {
   box-shadow: var(--shadow-inset);
   border-radius: calc(1px * Infinity);
-  height: 1.6rem;
-  display: grid;
-  place-content: stretch;
-  align-items: center;
+  height: var(--range-progress-height, 1.6rem);
+  position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
-.range {
+.progress {
+  height: 100%;
+  border-radius: calc(1px * Infinity);
+  background: v-bind(progressBackground);
+  position: absolute;
+}
+.range-input {
   -webkit-appearance: none;
   appearance: none;
-  height: 1.6rem;
+  background: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
   border-radius: calc(1px * Infinity);
   outline-offset: 0.3rem;
 }
-
-.range::-webkit-slider-thumb {
+.range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
-  border-radius: calc(1px * Infinity);
-  height: calc(v-bind(thumbSize) * 1rem);
+  height: v-bind(thumbSize);
   aspect-ratio: 1;
+  border-radius: calc(1px * Infinity);
   background-color: var(--background);
   border: 1px solid var(--color-highlight);
   box-shadow: var(--shadow-inset);
-  cursor: pointer;
-  transition: box-shadow 250ms ease-out;
-}
-.range::-moz-range-thumb {
-  -webkit-appearance: none;
-  border-radius: calc(1px * Infinity);
-  height: calc(v-bind(thumbSize) * 1rem);
-  aspect-ratio: 1;
-  background-color: var(--background);
-  border: 1px solid var(--color-highlight);
-  box-shadow: var(--shadow-inset);
-  cursor: pointer;
   transition: box-shadow 250ms ease-out;
 }
 
-.range:active::-webkit-slider-thumb {
-  /* box-shadow: var(--shadow-raised); */
+.range-input::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: v-bind(thumbSize);
+  aspect-ratio: 1;
+  border-radius: calc(1px * Infinity);
+  background-color: var(--background);
+  border: 1px solid var(--color-highlight);
+  box-shadow: var(--shadow-inset);
+  transition: box-shadow 250ms ease-out;
 }
-.range:active::-moz-range-thumb {
+.range-input:not(.hide-thumb)::-webkit-slider-thumb {
+  cursor: grab;
+}
+.range-input:not(.hide-thumb)::-moz-range-thumb {
+  cursor: grab;
+}
+.range-input:not(.hide-thumb):active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.range-input:active::-webkit-slider-thumb {
   box-shadow: var(--shadow-raised);
 }
-
+.range-input:active::-moz-range-thumb {
+  box-shadow: var(--shadow-raised);
+}
 .output {
   font-size: 1.5rem;
   font-weight: bold;
   font-variant-numeric: tabular-nums;
-  min-width: calc(v-bind(outsetWidth) * 1ch);
 }
 </style>

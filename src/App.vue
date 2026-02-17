@@ -26,7 +26,8 @@ import RangeBase from './components/range-base/RangeBase.vue'
         <ButtonBase />
         <SwitchBase />
         <CheckboxBase />
-        <RangeBase />
+        <RangeBase :vars="{ progress: { height: '0.1rem' } }" />
+        <RangeBase :show-thumb="false" />
       </div>
 
       <div style="margin: 2.4rem">
@@ -62,5 +63,9 @@ import RangeBase from './components/range-base/RangeBase.vue'
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+}
+
+:deep(.thumbb) {
+  background: red;
 }
 </style>
