@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AlertIcon from './assets/AlertIcon.vue'
 import ButtonBase from './components/ButtonBase.vue'
 import CheckboxBase from './components/CheckboxBase.vue'
 import SwitchBase from './components/SwitchBase.vue'
@@ -10,6 +9,7 @@ import CardDescription from './components/card-base/CardDescription.vue'
 import CardFooter from './components/card-base/CardFooter.vue'
 import CardHeader from './components/card-base/CardHeader.vue'
 import CardTitle from './components/card-base/CardTitle.vue'
+import RangeBase from './components/range-base/RangeBase.vue'
 </script>
 
 <template>
@@ -24,9 +24,10 @@ import CardTitle from './components/card-base/CardTitle.vue'
         <ButtonBase variant="primary" />
         <ButtonBase disabled />
         <ButtonBase />
+        <SwitchBase />
+        <CheckboxBase />
+        <RangeBase />
       </div>
-      <SwitchBase />
-      <CheckboxBase />
 
       <div style="margin: 2.4rem">
         <CardBase>
@@ -50,6 +51,7 @@ import CardTitle from './components/card-base/CardTitle.vue'
 .wrapper {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 .app-container {
   padding: 20px;

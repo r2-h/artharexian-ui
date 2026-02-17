@@ -471,8 +471,10 @@
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
+      background-color 0.2s linear,
+      color 0.2s linear,
+      box-shadow 0.2s linear,
+      border-color 0.2s linear;
     font-size: 1.6rem;
   }
 
@@ -486,7 +488,8 @@
   }
 
   :disabled,
-  [aria-busy='true'] {
+  [aria-busy='true'],
+  .is-disabled {
     pointer-events: none;
     color: var(--color-neutral-500);
     opacity: 0.45;

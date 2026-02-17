@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const modelValue = defineModel({ default: false })
+defineProps<{ isDisabled?: boolean }>()
 </script>
 
 <template>
-  <label class="wrapper">
+  <label :class="['wrapper', { 'is-disabled': isDisabled }]">
     <input type="checkbox" v-model="modelValue" />
     <div class="switch">
       <div class="thumb" />

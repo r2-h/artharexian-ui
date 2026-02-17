@@ -3,13 +3,14 @@ import { type Component } from 'vue'
 
 import CheckIcon from '../assets/CheckIcon.vue'
 
-withDefaults(defineProps<{ icon?: Component }>(), { icon: CheckIcon })
+withDefaults(defineProps<{ isDisabled?: boolean; icon?: Component }>(), { icon: CheckIcon })
 const modelValue = defineModel({ default: false })
+defineOptions({ inheritAttrs: false })
 </script>
 
 <template>
-  <label class="wrapper">
-    <input type="checkbox" v-model="modelValue" />
+  <label :class="['wrapper', { 'is-disabled': isDisabled }]">
+    <input type="checkbox" v-model="modelValue" v-bind="$attrs" />
     <div class="checkbox">
       <component :is="icon" class="indicator" />
     </div>
@@ -22,6 +23,7 @@ const modelValue = defineModel({ default: false })
   display: inline-block;
   cursor: pointer;
 }
+
 input {
   appearance: none;
   &:focus-visible + .checkbox {
@@ -30,6 +32,13 @@ input {
   }
   &:checked + .checkbox {
     color: var(--primary);
+
+    background-image: linear-gradient(
+      to top left,
+      color-mix(in oklch, var(--primary), transparent 95%),
+      color-mix(in oklch, var(--primary), transparent 75%)
+    );
+    box-shadow: var(--shadow-raised);
   }
   &:checked + .checkbox .indicator {
     display: block;
@@ -44,6 +53,10 @@ input {
   border: 0.1rem solid var(--color-highlight);
   background-color: var(--background);
   box-shadow: var(--shadow-inset);
+  transition:
+    background-color 250ms ease-out,
+    color 250ms ease-out,
+    box-shadow 250ms ease-out;
 }
 .indicator {
   display: none;
