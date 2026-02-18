@@ -2,32 +2,33 @@
 import { computed, ref } from 'vue'
 
 import { useVars } from '../../composables/useWars'
-import { cssSizeToNumber } from '../../utils/cssSizeToNumber'
+import { cssSizeToNumber, cssValueToUnit } from '../../utils/cssParser'
 import { mergeDefaultProps } from '../../utils/mergeDefaultProps'
+import type { RangeBaseProps, RangeBaseVars } from './types'
 
-type Vars = { progress?: { height?: string }; thumb?: { size?: string } }
 const {
   min = 0,
   max = 100,
   variant = 'default',
   showThumb = true,
   ...props
-} = defineProps<{
-  min?: number
-  max?: number
-  variant?: 'default' | 'secondary'
-  showThumb?: boolean
-  cls?: { input?: string; progress?: string }
-  vars?: Vars
-}>()
-const vars = computed(() => mergeDefaultProps<Vars>({ thumb: { size: '2rem' } }, props.vars))
+} = defineProps<RangeBaseProps>()
+const vars = computed(() =>
+  mergeDefaultProps<RangeBaseVars>({ thumb: { size: '2rem' } }, props.vars),
+)
 
 const rangeValue = ref(50)
 
 const progressPercent = computed(() => {
   const percent = ((rangeValue.value - min) / (max - min)) * 100
   const thumbOffset = (0.5 - percent / 100) * cssSizeToNumber(vars.value.thumb?.size)
-  return showThumb ? `calc(${percent}% + ${thumbOffset}rem)` : `${percent}%`
+  console.log(
+    cssValueToUnit(vars.value.thumb?.size),
+    `calc(${percent}% + ${thumbOffset}${cssValueToUnit(vars.value.thumb?.size)})`,
+  )
+  return showThumb
+    ? `calc(${percent}% + ${thumbOffset}${cssValueToUnit(vars.value.thumb?.size)})`
+    : `${percent}%`
 })
 
 const progressBackground = computed(() => {
@@ -46,14 +47,19 @@ const progressBackground = computed(() => {
   return `linear-gradient(to left, ${gradientColor.start}, ${gradientColor.end})`
 })
 
-const thumbSize = computed(() => (showThumb ? vars.value.thumb?.size : '0rem'))
+const thumbSize = computed(() => {
+  if (!showThumb) return '0px'
+  return typeof vars.value.thumb?.size === 'number'
+    ? `${vars.value.thumb?.size}px`
+    : vars.value.thumb?.size
+})
 
 const varsStyle = useVars('range', [vars.value])
 </script>
 
 <template>
-  <div class="container" :style="varsStyle">
-    <div class="wrapper">
+  <div :class="['container', cls?.container]" :style="varsStyle">
+    <div :class="['wrapper', cls?.wrapper]">
       <div :class="['progress', cls?.progress]" :style="{ width: progressPercent }" />
 
       <input
@@ -81,8 +87,8 @@ const varsStyle = useVars('range', [vars.value])
   box-shadow: var(--shadow-inset);
   border-radius: calc(1px * Infinity);
   height: var(--range-progress-height, 1.6rem);
+  width: var(--range-progress-width, 100%);
   position: relative;
-  width: 100%;
   display: flex;
   align-items: center;
 }

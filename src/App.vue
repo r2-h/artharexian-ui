@@ -26,8 +26,9 @@ import RangeBase from './components/range-base/RangeBase.vue'
         <ButtonBase />
         <SwitchBase />
         <CheckboxBase />
-        <RangeBase :vars="{ progress: { height: '0.1rem' } }" />
-        <RangeBase :show-thumb="false" />
+        <RangeBase :vars="{ thumb: { size: '6rem' } }" />
+        <RangeBase :vars="{ thumb: { size: '10px' } }" />
+        <RangeBase :vars="{ thumb: { size: 20 } }" />
       </div>
 
       <div style="margin: 2.4rem">
