@@ -20,7 +20,7 @@ defineOptions({ inheritAttrs: false })
 
 <style scoped>
 .wrapper {
-  display: inline-block;
+  display: inline-flex;
   cursor: pointer;
 }
 

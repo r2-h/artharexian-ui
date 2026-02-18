@@ -9,7 +9,8 @@ export type RangeBaseProps = {
   min?: number
   max?: number
   variant?: 'default' | 'secondary'
-  showThumb?: boolean
+  hasThumb?: boolean
   cls?: { input?: string; progress?: string; wrapper?: string; container?: string }
   vars?: RangeBaseVars
+  isVertical?: boolean
 }

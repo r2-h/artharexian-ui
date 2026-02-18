@@ -26,9 +26,11 @@ import RangeBase from './components/range-base/RangeBase.vue'
         <ButtonBase />
         <SwitchBase />
         <CheckboxBase />
-        <RangeBase :vars="{ thumb: { size: '6rem' } }" />
+        <RangeBase :has-thumb="false" />
         <RangeBase :vars="{ thumb: { size: '10px' } }" />
         <RangeBase :vars="{ thumb: { size: 20 } }" />
+        <RangeBase isVertical :has-thumb="false" :vars="{ progress: { height: '10rem' } }" />
+        <RangeBase isVertical :has-thumb="false" />
       </div>
 
       <div style="margin: 2.4rem">
@@ -54,6 +56,7 @@ import RangeBase from './components/range-base/RangeBase.vue'
   display: flex;
   gap: 1rem;
   align-items: center;
+  vertical-align: middle;
 }
 .app-container {
   padding: 20px;
@@ -64,9 +67,5 @@ import RangeBase from './components/range-base/RangeBase.vue'
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-}
-
-:deep(.thumbb) {
-  background: red;
 }
 </style>

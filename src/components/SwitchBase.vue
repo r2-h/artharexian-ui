@@ -15,7 +15,7 @@ defineProps<{ isDisabled?: boolean }>()
 
 <style scoped>
 .wrapper {
-  display: inline-block;
+  display: inline-flex;
   cursor: pointer;
 }
 

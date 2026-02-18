@@ -10,94 +10,99 @@ const {
   min = 0,
   max = 100,
   variant = 'default',
-  showThumb = true,
+  hasThumb = true,
+  isVertical = false,
   ...props
 } = defineProps<RangeBaseProps>()
+
 const vars = computed(() =>
   mergeDefaultProps<RangeBaseVars>({ thumb: { size: '2rem' } }, props.vars),
 )
 
-const rangeValue = ref(50)
+const range = ref(50)
 
 const progressPercent = computed(() => {
-  const percent = ((rangeValue.value - min) / (max - min)) * 100
-  const thumbOffset = (0.5 - percent / 100) * cssSizeToNumber(vars.value.thumb?.size)
-  console.log(
-    cssValueToUnit(vars.value.thumb?.size),
-    `calc(${percent}% + ${thumbOffset}${cssValueToUnit(vars.value.thumb?.size)})`,
-  )
-  return showThumb
-    ? `calc(${percent}% + ${thumbOffset}${cssValueToUnit(vars.value.thumb?.size)})`
-    : `${percent}%`
+  const percent = ((range.value - min) / (max - min)) * 100
+  const thumbSize = cssSizeToNumber(vars.value.thumb?.size)
+  const unit = cssValueToUnit(vars.value.thumb?.size)
+  const thumbOffset = (0.5 - percent / 100) * thumbSize
+
+  return hasThumb ? `calc(${percent}% + ${thumbOffset}${unit})` : `${percent}%`
 })
 
 const progressBackground = computed(() => {
-  let gradientColor
-  if (variant === 'secondary')
-    gradientColor = {
-      start: 'var(--muted)',
-      end: `color-mix(in oklch, var(--muted), transparent 70%)`,
-    }
-  else
-    gradientColor = {
-      start: 'var(--primary)',
-      end: `color-mix(in oklch, var(--primary), transparent 70%)`,
-    }
-
-  return `linear-gradient(to left, ${gradientColor.start}, ${gradientColor.end})`
+  const color = variant === 'secondary' ? 'var(--muted)' : 'var(--primary)'
+  const fade = `color-mix(in oklch, ${color}, transparent 70%)`
+  return `linear-gradient(${isVertical ? 'to top' : 'to left'}, ${color}, ${fade})`
 })
 
 const thumbSize = computed(() => {
-  if (!showThumb) return '0px'
+  if (!hasThumb) return '0px'
   return typeof vars.value.thumb?.size === 'number'
     ? `${vars.value.thumb?.size}px`
     : vars.value.thumb?.size
 })
 
 const varsStyle = useVars('range', [vars.value])
+
+const progressStyle = computed(() => {
+  return isVertical
+    ? { height: progressPercent.value, width: '100%' }
+    : { width: progressPercent.value, height: '100%' }
+})
 </script>
 
 <template>
-  <div :class="['container', cls?.container]" :style="varsStyle">
+  <div :class="['container', { 'is-vertical': isVertical }, cls?.container]" :style="varsStyle">
     <div :class="['wrapper', cls?.wrapper]">
-      <div :class="['progress', cls?.progress]" :style="{ width: progressPercent }" />
+      <div :class="['progress', cls?.progress]" :style="progressStyle" />
 
       <input
-        v-model="rangeValue"
+        v-model="range"
         type="range"
         :min="min"
         :max="max"
-        :class="['range-input', { 'hide-thumb': !showThumb }, cls?.input]"
+        :class="['range-input', { 'hide-thumb': !hasThumb }, cls?.input]"
       />
     </div>
-    <output class="output" :style="{ minWidth: `${String(max).length}ch` }">
-      {{ rangeValue }}
-    </output>
   </div>
 </template>
 
 <style scoped>
 .container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
   width: 100%;
+}
+.container.is-vertical {
+  width: fit-content;
+  height: stretch;
+  display: flex;
+  flex-direction: vertical;
+  align-items: end;
+  & .wrapper {
+    width: var(--range-progress-width, 1.6rem);
+    height: var(--range-progress-height);
+    /* Меняем ориентацию через writing-mode, но БЕЗ appearance: slider-vertical */
+    writing-mode: bt-lr;
+    writing-mode: vertical-lr;
+    direction: rtl;
+  }
 }
 .wrapper {
   box-shadow: var(--shadow-inset);
   border-radius: calc(1px * Infinity);
-  height: var(--range-progress-height, 1.6rem);
   width: var(--range-progress-width, 100%);
+  height: var(--range-progress-height, 1.6rem);
   position: relative;
   display: flex;
   align-items: center;
+  background-color: var(--background);
 }
 .progress {
-  height: 100%;
   border-radius: calc(1px * Infinity);
   background: v-bind(progressBackground);
   position: absolute;
 }
+
 .range-input {
   -webkit-appearance: none;
   appearance: none;
@@ -106,10 +111,11 @@ const varsStyle = useVars('range', [vars.value])
   width: 100%;
   height: 100%;
   border-radius: calc(1px * Infinity);
-  outline-offset: 0.3rem;
+  outline-offset: 0.5rem;
 }
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
+  cursor: grab;
   height: v-bind(thumbSize);
   aspect-ratio: 1;
   border-radius: calc(1px * Infinity);
@@ -118,9 +124,9 @@ const varsStyle = useVars('range', [vars.value])
   box-shadow: var(--shadow-inset);
   transition: box-shadow 250ms ease-out;
 }
-
 .range-input::-moz-range-thumb {
   -webkit-appearance: none;
+  cursor: grab;
   height: v-bind(thumbSize);
   aspect-ratio: 1;
   border-radius: calc(1px * Infinity);
@@ -129,11 +135,13 @@ const varsStyle = useVars('range', [vars.value])
   box-shadow: var(--shadow-inset);
   transition: box-shadow 250ms ease-out;
 }
-.range-input:not(.hide-thumb)::-webkit-slider-thumb {
-  cursor: grab;
+.range-input.hide-thumb::-webkit-slider-thumb {
+  cursor: default;
+  visibility: hidden;
 }
-.range-input:not(.hide-thumb)::-moz-range-thumb {
-  cursor: grab;
+.range-input.hide-thumb::-moz-range-thumb {
+  cursor: default;
+  visibility: hidden;
 }
 .range-input:not(.hide-thumb):active::-webkit-slider-thumb {
   cursor: grabbing;
@@ -144,10 +152,5 @@ const varsStyle = useVars('range', [vars.value])
 }
 .range-input:active::-moz-range-thumb {
   box-shadow: var(--shadow-raised);
-}
-.output {
-  font-size: 1.5rem;
-  font-weight: bold;
-  font-variant-numeric: tabular-nums;
 }
 </style>
