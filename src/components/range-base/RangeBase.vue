@@ -3,27 +3,30 @@ import { computed, ref } from 'vue'
 
 import { useVars } from '../../composables/useWars'
 import { cssSizeToNumber } from '../../utils/cssSizeToNumber'
+import { mergeDefaultProps } from '../../utils/mergeDefaultProps'
 
+type Vars = { progress?: { height?: string }; thumb?: { size?: string } }
 const {
-  variant = 'default',
   min = 0,
   max = 100,
+  variant = 'default',
   showThumb = true,
-  vars = { thumb: { size: '2rem' } },
+  ...props
 } = defineProps<{
   min?: number
   max?: number
   variant?: 'default' | 'secondary'
   showThumb?: boolean
   cls?: { input?: string; progress?: string }
-  vars?: { progress?: { height?: string }; thumb?: { size?: string } }
+  vars?: Vars
 }>()
+const vars = computed(() => mergeDefaultProps<Vars>({ thumb: { size: '2rem' } }, props.vars))
 
 const rangeValue = ref(50)
 
 const progressPercent = computed(() => {
   const percent = ((rangeValue.value - min) / (max - min)) * 100
-  const thumbOffset = (0.5 - percent / 100) * cssSizeToNumber(vars.thumb?.size)
+  const thumbOffset = (0.5 - percent / 100) * cssSizeToNumber(vars.value.thumb?.size)
   return showThumb ? `calc(${percent}% + ${thumbOffset}rem)` : `${percent}%`
 })
 
@@ -43,9 +46,9 @@ const progressBackground = computed(() => {
   return `linear-gradient(to left, ${gradientColor.start}, ${gradientColor.end})`
 })
 
-const thumbSize = computed(() => (showThumb ? vars.thumb?.size : '0rem'))
+const thumbSize = computed(() => (showThumb ? vars.value.thumb?.size : '0rem'))
 
-const varsStyle = useVars('range', [vars])
+const varsStyle = useVars('range', [vars.value])
 </script>
 
 <template>
