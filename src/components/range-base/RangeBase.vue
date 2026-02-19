@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import { useVars } from '../../composables/useWars'
 import { cssSizeToNumber, cssValueToUnit } from '../../utils/cssParser'
