@@ -3,9 +3,8 @@ import { provide, readonly, ref } from 'vue'
 
 import { TabsKey } from './context'
 
-const { defaultValue } = defineProps<{ defaultValue?: string }>()
-
-const activeTab = ref(defaultValue || '')
+const props = defineProps<{ defaultValue?: string }>()
+const activeTab = ref(props.defaultValue || '')
 
 const setActiveTab = (value: string) => (activeTab.value = value)
 

@@ -5,8 +5,9 @@ import { useTabsContext } from './context'
 
 const props = defineProps<{ value: string }>()
 const { activeTab, setActiveTab } = useTabsContext()
-//
+
 const selectTab = () => setActiveTab(props.value)
+
 const isSelected = computed(() => activeTab.value === props.value || null)
 </script>
 
@@ -24,14 +25,16 @@ button {
   white-space: nowrap;
   border-radius: var(--radius-xl);
   padding: 0.8rem 1.6rem;
-  transition: all 0.3s;
+  transition:
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
   position: relative;
   z-index: 10;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-
   &:focus-visible {
-    outline: 0.2rem solid var(--background);
+    outline: 0.2rem solid var(--foreground);
     outline-offset: 0.2rem;
   }
   &:hover {

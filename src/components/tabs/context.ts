@@ -6,10 +6,7 @@ export const TabsKey: InjectionKey<TabsContext> = Symbol('TabsContext')
 
 export function useTabsContext() {
   const context = inject(TabsKey)
-
-  if (!context) {
-    throw new Error('Tabs components must be used within <TabsBase />')
-  }
+  if (!context) throw new Error('Tabs components must be used within TabsBase')
 
   return context
 }
