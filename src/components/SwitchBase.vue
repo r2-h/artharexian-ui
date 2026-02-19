@@ -44,6 +44,9 @@ input {
   background-color: var(--background);
   box-shadow: var(--shadow-inset);
   border: 0.1rem solid var(--color-highlight);
+  transition:
+    background-color 250ms ease-out,
+    box-shadow 250ms ease-out;
 }
 
 .thumb {

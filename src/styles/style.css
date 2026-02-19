@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@14..36,300;14..36,400;14..36,500;14..36,600;14..36,700&display=swap');
-/* @import 'tailwindcss'; */
+@import 'tailwindcss';
 @layer theme, base, components, utilities;
 
 @layer theme {
@@ -345,7 +345,7 @@
     --shadow-raised:
       2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight),
       inset 0px 0px 0px var(--color-shadow), inset 0px 0px 0px var(--color-highlight),
-      inset 1px 1px 2px var(--color-edge);
+      inset 1px 1px 2px var(--color-highlight), inset -1px -1px 2px var(--color-shadow);
     --shadow-inset:
       1px 1px 2px var(--color-shadow), -1px -1px 2px var(--color-highlight),
       inset 2px 2px 6px var(--color-shadow), inset -2px -2px 6px var(--color-highlight);
@@ -389,10 +389,9 @@
     --background: light-dark(var(--color-zinc-200), var(--color-zinc-900));
     --foreground: light-dark(var(--color-zinc-700), var(--color-zinc-100));
     --color-shadow: light-dark(oklch(0% 0 0 / 0.2), oklch(0 0 0 / 0.75));
-    --color-edge: light-dark(oklch(100% 0 0 / 0.1), oklch(100% 0 0 / 0.1));
-    --color-highlight: light-dark(white, oklch(100% 0 0 / 0.2));
-    --color-border: light-dark(var(--color-zinc-100), var(--color-zinc-950));
-    --color-danger: light-dark(oklch(from var(--color-red-600) l 0.2 h), var(--color-red-400));
+    --color-highlight: light-dark(oklch(100% 0 0 / 1), oklch(100% 0 0 / 0.2));
+    --color-border: light-dark(var(--color-zinc-200), var(--color-zinc-950));
+    --color-danger: light-dark(var(--color-red-600), var(--color-red-400));
     --color-warning: light-dark(var(--color-orange-600), var(--color-orange-400));
     --color-success: light-dark(var(--color-green-600), var(--color-green-400));
     --color-info: light-dark(var(--color-sky-600), var(--color-sky-400));
@@ -400,14 +399,15 @@
     --card-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --popover: light-dark(var(--color-neutral-200), var(--color-neutral-900));
     --popover-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
-    --primary: light-dark(oklch(from var(--color-indigo-600) l 0.2 h), var(--color-indigo-400));
+    --primary: light-dark(
+      oklch(from var(--color-indigo-600) l calc(c * 0.75) h),
+      var(--color-indigo-400)
+    );
     --primary-foreground: var(--color-neutral-200);
     --secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
     --secondary-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --muted: light-dark(var(--color-zinc-300), var(--color-zinc-700));
     --muted-foreground: light-dark(var(--color-zinc-600), var(--color-zinc-400));
-    /* --accent: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-    --accent-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200)); */
     --border: light-dark(var(--color-neutral-300), var(--color-neutral-700));
     --input: light-dark(var(--color-neutral-300), var(--color-neutral-700));
 
@@ -470,11 +470,6 @@
     background: var(--background);
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
-    transition:
-      background-color 0.2s linear,
-      color 0.2s linear,
-      box-shadow 0.2s linear,
-      border-color 0.2s linear;
     font-size: 1.6rem;
   }
 
@@ -508,10 +503,6 @@
 
   textarea {
     resize: vertical;
-  }
-
-  ::placeholder {
-    opacity: 1;
   }
 
   img,
@@ -554,6 +545,9 @@
   }
   h3 {
     font-size: var(--text-lg);
+  }
+  ::placeholder {
+    color: var(--muted-foreground);
   }
 
   .font-xs {

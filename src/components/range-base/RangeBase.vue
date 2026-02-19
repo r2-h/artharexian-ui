@@ -19,7 +19,7 @@ const vars = computed(() =>
   mergeDefaultProps<RangeBaseVars>({ thumb: { size: '2rem' } }, props.vars),
 )
 
-const range = ref(50)
+const range = defineModel<number>({ default: 50 })
 
 const progressPercent = computed(() => {
   const percent = ((range.value - min) / (max - min)) * 100
@@ -32,8 +32,8 @@ const progressPercent = computed(() => {
 
 const progressBackground = computed(() => {
   const color = variant === 'secondary' ? 'var(--muted)' : 'var(--primary)'
-  const fade = `color-mix(in oklch, ${color}, transparent 70%)`
-  return `linear-gradient(${isVertical ? 'to top' : 'to left'}, ${color}, ${fade})`
+  const fade = `oklch(from ${color} l c h / 0.75)`
+  return `linear-gradient(${isVertical ? 'to bottom' : 'to left'}, ${color}, ${fade})`
 })
 
 const thumbSize = computed(() => {
@@ -96,6 +96,9 @@ const progressStyle = computed(() => {
   display: flex;
   align-items: center;
   background-color: var(--background);
+  transition:
+    background-color 250ms ease-out,
+    box-shadow 250ms ease-out;
 }
 .progress {
   border-radius: calc(1px * Infinity);
@@ -111,7 +114,10 @@ const progressStyle = computed(() => {
   width: 100%;
   height: 100%;
   border-radius: calc(1px * Infinity);
-  outline-offset: 0.5rem;
+  outline-offset: 0.4rem;
+  &:focus-visible {
+    outline: 0.2rem solid var(--foreground);
+  }
 }
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -122,7 +128,9 @@ const progressStyle = computed(() => {
   background-color: var(--background);
   border: 1px solid var(--color-highlight);
   box-shadow: var(--shadow-inset);
-  transition: box-shadow 250ms ease-out;
+  transition:
+    background-color 250ms ease-out,
+    box-shadow 250ms ease-out;
 }
 .range-input::-moz-range-thumb {
   -webkit-appearance: none;
@@ -133,7 +141,9 @@ const progressStyle = computed(() => {
   background-color: var(--background);
   border: 1px solid var(--color-highlight);
   box-shadow: var(--shadow-inset);
-  transition: box-shadow 250ms ease-out;
+  transition:
+    background-color 250ms ease-out,
+    box-shadow 250ms ease-out;
 }
 .range-input.hide-thumb::-webkit-slider-thumb {
   cursor: default;

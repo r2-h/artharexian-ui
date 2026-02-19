@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{ variant?: 'raised' | 'inset' }>(), { variant: 'raised' })
+const { variant = 'raised' } = defineProps<{ variant?: 'raised' | 'inset' }>()
 </script>
 
 <template>
-  <section :class="['card', props.variant]">
+  <section :class="['card', variant]">
     <slot />
   </section>
 </template>

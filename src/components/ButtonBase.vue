@@ -39,11 +39,11 @@ const props = withDefaults(defineProps<Props>(), {
   background: var(--background);
   box-shadow: var(--shadow-raised);
   transition:
-    box-shadow 200ms ease-in-out,
-    scale 200ms ease-in-out,
-    background-color 0.2s linear,
-    color 0.2s linear,
-    border-color 0.2s linear;
+    scale 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.1s ease-in-out,
+    border-color 0.1s ease-in-out;
 
   &:active {
     box-shadow: var(--shadow-inset);
