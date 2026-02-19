@@ -1,30 +1,13 @@
 <script setup lang="ts">
-import { type ButtonHTMLAttributes } from 'vue'
+import type { ButtonProps } from './types'
 
-type ButtonVariant = 'primary' | 'default' | 'danger'
-type ButtonShape = 'radius-default' | 'radius-circle'
-
-type Props = {
-  isPending?: boolean
-  variant?: ButtonVariant
-  shape?: ButtonShape
-  type?: ButtonHTMLAttributes['type']
-  disabled?: boolean
-  as?: 'button' | 'a'
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  type: 'button',
-  variant: 'default',
-  shape: 'radius-default',
-  as: 'button',
-})
+const { variant = 'default', shape = 'radius-default', is = 'button' } = defineProps<ButtonProps>()
 </script>
 
 <template>
-  <button :as :class="['btn', shape, variant]" :type :disabled :aria-busy="isPending">
+  <component :is :class="['btn', shape, variant]" :aria-busy="isPending">
     <slot>button</slot>
-  </button>
+  </component>
 </template>
 
 <style scoped>

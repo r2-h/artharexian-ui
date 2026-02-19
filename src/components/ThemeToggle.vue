@@ -2,7 +2,7 @@
 import MoonIcon from '../assets/MoonIcon.vue'
 import SunIcon from '../assets/SunIcon.vue'
 import useTheme from '../composables/useTheme'
-import ButtonBase from './ButtonBase.vue'
+import ButtonBase from './button-base/ButtonBase.vue'
 
 const { currentTheme, toggleTheme } = useTheme()
 </script>

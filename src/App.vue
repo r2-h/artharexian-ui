@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ButtonBase from './components/ButtonBase.vue'
 import CheckboxBase from './components/CheckboxBase.vue'
 import SwitchBase from './components/SwitchBase.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
+import ButtonBase from './components/button-base/ButtonBase.vue'
 import CardBase from './components/card-base/CardBase.vue'
 import CardContent from './components/card-base/CardContent.vue'
 import CardDescription from './components/card-base/CardDescription.vue'
@@ -46,7 +46,7 @@ import TabsTab from './components/tabs/TabsTab.vue'
           <CardFooter> <RangeBase variant="secondary" /></CardFooter>
         </CardBase>
       </div>
-  
+
       <div style="margin: 2.4rem">
         <CardBase>
           <CardHeader>
