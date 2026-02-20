@@ -26,10 +26,12 @@ defineOptions({ inheritAttrs: false })
 
 input {
   appearance: none;
+
   &:focus-visible + .checkbox {
     outline: 0.2rem solid var(--foreground);
     outline-offset: 0.4rem;
   }
+
   &:checked + .checkbox {
     color: var(--primary);
 
@@ -40,10 +42,12 @@ input {
     );
     box-shadow: var(--shadow-raised);
   }
+
   &:checked + .checkbox .indicator {
     display: block;
   }
 }
+
 .checkbox {
   display: grid;
   place-content: center;
@@ -58,6 +62,7 @@ input {
     color 250ms ease-out,
     box-shadow 250ms ease-out;
 }
+
 .indicator {
   display: none;
 }

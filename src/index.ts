@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 
 import ButtonBase from './components/button-base/ButtonBase.vue'
-import type { ButtonProps, ButtonVariant, ButtonShape } from './components/button-base/types'
+import type { ButtonProps, ButtonShape, ButtonVariant } from './components/button-base/types'
 import { initTheme } from './composables/useTheme'
 import './styles/style.css'
 
