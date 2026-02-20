@@ -1,5 +1,5 @@
-type ButtonVariant = 'primary' | 'default' | 'danger'
-type ButtonShape = 'radius-default' | 'radius-circle'
+export type ButtonVariant = 'primary' | 'default' | 'danger'
+export type ButtonShape = 'radius-default' | 'radius-circle'
 
 export type ButtonProps = {
   isPending?: boolean

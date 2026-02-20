@@ -2,7 +2,6 @@
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import vue from '@vitejs/plugin-vue'
 import { playwright } from '@vitest/browser-playwright'
-// https://vite.dev/config/
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'path'
@@ -13,20 +12,23 @@ import dts from 'vite-plugin-dts'
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [
     vue(),
     cssInjectedByJsPlugin({ useStrictCSP: true, relativeCSSInjection: false }),
-    dts({ rollupTypes: true }),
+    dts({
+      rollupTypes: true,
+      tsconfigPath: './tsconfig.app.json',
+    }),
   ],
   build: {
     lib: {
-      name: 'ui_library',
+      name: 'artharexian-ui',
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: (format) => `ui_library.${format}.js`,
+      fileName: (format) => `artharexian-ui.${format}.js`,
     },
     emptyOutDir: true,
+    copyPublicDir: false,
     rollupOptions: {
       external: ['vue'],
       output: {
@@ -42,8 +44,6 @@ export default defineConfig({
       {
         extends: true,
         plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
           storybookTest({
             configDir: path.join(dirname, '.storybook'),
           }),

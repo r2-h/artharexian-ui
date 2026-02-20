@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 
 import ButtonBase from './components/button-base/ButtonBase.vue'
+import type { ButtonProps, ButtonVariant, ButtonShape } from './components/button-base/types'
 import { initTheme } from './composables/useTheme'
 import './styles/style.css'
 
@@ -12,6 +13,9 @@ export const install = (app: App) => {
 
 // Экспортируем по отдельности для tree-shaking (чтобы юзер мог взять только 1 компонент)
 export { ButtonBase }
+
+// Экспорт типов
+export type { ButtonProps, ButtonVariant, ButtonShape }
 
 // Экспорт по умолчанию для app.use()
 export default {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{ as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' }>(), {
+withDefaults(defineProps<{ as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' }>(), {
   as: 'h2',
 })
 </script>

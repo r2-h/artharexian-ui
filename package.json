@@ -1,42 +1,63 @@
 {
-  "name": "ui_library",
-  "private": true,
-  "version": "0.0.0",
+  "name": "artharexian-ui",
+  "description": "Vue 3 UI component library",
+  "version": "0.1.4",
+  "license": "MIT",
+  "private": false,
   "type": "module",
+  "author": "Artur Hareksian <artharexian@gmail.com> (https://github.com/r2-h)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r2-h/artharexian-ui.git"
+  },
+  "main": "./dist/artharexian-ui.umd.js",
+  "module": "./dist/artharexian-ui.es.js",
+  "types": "./dist/artharexian-ui.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/artharexian-ui.d.ts",
+      "import": "./dist/artharexian-ui.es.js",
+      "require": "./dist/artharexian-ui.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "format": "prettier --write",
     "preview": "vite preview",
-    "format": "prettier --write --plugin-search-dir=. --plugin=@trivago/prettier-plugin-sort-imports src/**/*.{ts,tsx,vue,js,jsx,json,css,scss,md}",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "dependencies": {
-    "vue": "^3.5.25"
+  "peerDependencies": {
+    "vue": "^3.5.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.0.1",
+    "vue": "^3.5.25",
+    "@vitejs/plugin-vue": "^6.0.2",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^3.6.4",
+    "vite-plugin-css-injected-by-js": "^3.1.1",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.1.5",
+    "storybook": "^10.2.10",
+    "@storybook/vue3-vite": "^10.2.10",
     "@storybook/addon-a11y": "^10.2.10",
     "@storybook/addon-docs": "^10.2.10",
     "@storybook/addon-vitest": "^10.2.10",
-    "@storybook/vue3-vite": "^10.2.10",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^24.10.1",
-    "@vitejs/plugin-vue": "^6.0.2",
+    "@chromatic-com/storybook": "^5.0.1",
+    "vitest": "^4.0.18",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
-    "@vue/tsconfig": "^0.8.1",
+    "playwright": "^1.58.2",
     "eslint": "^10.0.0",
     "eslint-plugin-storybook": "^10.2.10",
-    "playwright": "^1.58.2",
     "prettier": "^3.8.1",
-    "storybook": "^10.2.10",
-    "typescript": "~5.9.3",
-    "vite": "^7.3.1",
-    "vite-plugin-css-injected-by-js": "^3.5.2",
-    "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.0.18",
-    "vue-tsc": "^3.1.5"
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/node": "^24.10.1",
+    "@vue/tsconfig": "^0.8.1"
   },
   "eslintConfig": {
     "extends": [
