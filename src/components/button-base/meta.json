@@ -1,10 +1,4 @@
 {
   "name": "button-base",
-  "files": [
-    "ButtonBase.vue",
-    "types.ts",
-    "index.ts",
-    "style.css"
-  ],
-  "css": true
+  "files": ["ButtonBase.vue", "types.ts", "index.ts"]
 }

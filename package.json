@@ -1,7 +1,7 @@
 {
   "name": "artharexian-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.2.6",
+  "version": "0.2.11",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -19,8 +19,9 @@
   "files": [
     "dist",
     "src/styles",
-    "registry",
-    "cli"
+    "cli",
+    "!**/*.stories.ts",
+    "!**/meta.json"
   ],
   "exports": {
     ".": {
@@ -36,7 +37,8 @@
     "format": "prettier --write .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "postinstall": "node ./cli/index.mjs init"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
