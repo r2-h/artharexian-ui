@@ -19,15 +19,19 @@ function readRegistry() {
     console.error('Registry not found')
     process.exit(1)
   }
-  return JSON.parse(fs.readFileSync(REGISTRY_JSON, 'utf8'))
-}
-
-function ensureVueProject() {
-  // Optional: could check for package.json or vue dependency
-  // For now, just ensure cwd is writable
+  try {
+    return JSON.parse(fs.readFileSync(REGISTRY_JSON, 'utf8'))
+  } catch {
+    console.error('Invalid registry.json')
+    process.exit(1)
+  }
 }
 
 function copyFileSafe(src, dest) {
+  if (!fs.existsSync(src)) {
+    console.error(`Missing file in registry: ${path.basename(src)}`)
+    process.exit(1)
+  }
   if (fs.existsSync(dest)) {
     const rel = path.relative(cwd, dest)
     console.log(`skip ${rel} (exists)`)
@@ -59,7 +63,7 @@ function addComponent(name) {
     process.exit(1)
   }
 
-  // Auto-install styles if not present
+  // Auto-install registry styles if not present
   const stylesPath = path.join(cwd, 'src', 'styles')
   const registryStyles = path.join(REGISTRY_DIR, 'styles')
   if (!fs.existsSync(stylesPath) && fs.existsSync(registryStyles)) {
