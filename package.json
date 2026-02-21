@@ -1,7 +1,7 @@
 {
   "name": "artharexian-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "license": "MIT",
   "private": false,
   "type": "module",

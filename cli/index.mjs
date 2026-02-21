@@ -95,6 +95,14 @@ function copyDir(src, dest) {
 // Add component from GitHub
 async function addComponent(componentName) {
   const destDir = path.resolve(cwd, 'src/components/ui', componentName)
+  const stylesPath = path.resolve(cwd, 'src/styles')
+
+  // Auto-install styles if not present
+  if (!fs.existsSync(stylesPath)) {
+    console.log('Styles not found. Installing...\n')
+    await copyStyles()
+    console.log('')
+  }
 
   console.log(`Fetching ${componentName} from GitHub...`)
 
