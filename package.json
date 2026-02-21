@@ -1,7 +1,7 @@
 {
   "name": "artharexian-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.1.12",
+  "version": "0.2.6",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -13,8 +13,14 @@
   "main": "./dist/artharexian-ui.umd.js",
   "module": "./dist/artharexian-ui.es.js",
   "types": "./dist/artharexian-ui.d.ts",
+  "bin": {
+    "artharexian-ui": "./cli/index.mjs"
+  },
   "files": [
-    "dist"
+    "dist",
+    "src/styles",
+    "registry",
+    "cli"
   ],
   "exports": {
     ".": {
@@ -36,29 +42,29 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
-    "vue": "^3.5.25",
-    "@vitejs/plugin-vue": "^6.0.2",
-    "vite": "^7.3.1",
-    "vite-plugin-dts": "^3.6.4",
-    "vite-plugin-css-injected-by-js": "^3.1.1",
-    "typescript": "~5.9.3",
-    "vue-tsc": "^3.1.5",
-    "storybook": "^10.2.10",
-    "@storybook/vue3-vite": "^10.2.10",
+    "@chromatic-com/storybook": "^5.0.1",
     "@storybook/addon-a11y": "^10.2.10",
     "@storybook/addon-docs": "^10.2.10",
     "@storybook/addon-vitest": "^10.2.10",
-    "@chromatic-com/storybook": "^5.0.1",
-    "vitest": "^4.0.18",
-    "@vitest/browser-playwright": "^4.0.18",
-    "@vitest/coverage-v8": "^4.0.18",
-    "playwright": "^1.58.2",
-    "eslint": "^10.0.0",
-    "eslint-plugin-storybook": "^10.2.10",
-    "prettier": "^3.8.1",
+    "@storybook/vue3-vite": "^10.2.10",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.10.1",
-    "@vue/tsconfig": "^0.8.1"
+    "@vitejs/plugin-vue": "^6.0.2",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^10.0.0",
+    "eslint-plugin-storybook": "^10.2.10",
+    "playwright": "^1.58.2",
+    "prettier": "^3.8.1",
+    "storybook": "^10.2.10",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1",
+    "vite-plugin-css-injected-by-js": "^3.1.1",
+    "vite-plugin-dts": "^3.6.4",
+    "vitest": "^4.0.18",
+    "vue": "^3.5.25",
+    "vue-tsc": "^3.1.5"
   },
   "eslintConfig": {
     "extends": [
