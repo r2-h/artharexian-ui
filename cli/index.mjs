@@ -139,25 +139,29 @@ async function listComponents() {
   }
 }
 
-// Copy styles from installed package
-function copyStyles() {
-  const stylesSrc = path.resolve(cwd, 'node_modules/artharexian-ui/src/styles')
+// Copy styles from GitHub
+async function copyStyles() {
   const stylesDst = path.resolve(cwd, 'src/styles')
 
-  if (!fs.existsSync(stylesSrc)) {
-    console.log('⚠ Styles not found in package')
-    return
-  }
+  console.log('Fetching styles from GitHub...')
 
-  fs.mkdirSync(stylesDst, { recursive: true })
+  try {
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/src/styles?ref=${GITHUB_BRANCH}`
+    const data = await fetchJSON(url)
+    const cssFiles = data.filter((file) => file.type === 'file' && file.name.endsWith('.css'))
 
-  for (const file of fs.readdirSync(stylesSrc)) {
-    if (file.endsWith('.css')) {
-      const srcFile = path.join(stylesSrc, file)
-      const dstFile = path.join(stylesDst, file)
-      fs.copyFileSync(srcFile, dstFile)
-      console.log(`✔ ${file} installed to src/styles/${file}`)
+    fs.mkdirSync(stylesDst, { recursive: true })
+
+    for (const file of cssFiles) {
+      const destPath = path.join(stylesDst, file.name)
+      await downloadFile(file, destPath)
+      console.log(`  ✔ ${file.name}`)
     }
+
+    console.log('✔ Styles installed')
+  } catch (error) {
+    console.error(`Error: ${error.message}`)
+    process.exit(1)
   }
 }
 
@@ -192,7 +196,7 @@ if (!command) {
 
 if (command === 'init') {
   console.log('Initializing artharexian-ui...')
-  copyStyles()
+  await copyStyles()
   console.log('')
   console.log('✔ artharexian-ui initialized successfully!')
   process.exit(0)

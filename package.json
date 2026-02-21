@@ -10,32 +10,21 @@
     "type": "git",
     "url": "git+https://github.com/r2-h/artharexian-ui.git"
   },
-  "main": "./dist/artharexian-ui.umd.js",
-  "module": "./dist/artharexian-ui.es.js",
-  "types": "./dist/artharexian-ui.d.ts",
   "bin": {
     "artharexian-ui": "./cli/index.mjs"
   },
   "files": [
-    "dist",
     "src/styles",
     "cli",
     "!**/*.stories.ts",
     "!**/meta.json"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/artharexian-ui.d.ts",
-      "import": "./dist/artharexian-ui.es.js",
-      "require": "./dist/artharexian-ui.umd.js"
-    },
-    "./css": "./dist/artharexian-ui.css"
+    "./styles": "./src/styles/style.css"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
     "format": "prettier --write .",
-    "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "postinstall": "node ./cli/index.mjs init"
@@ -62,8 +51,6 @@
     "storybook": "^10.2.10",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
-    "vite-plugin-css-injected-by-js": "^3.1.1",
-    "vite-plugin-dts": "^3.6.4",
     "vitest": "^4.0.18",
     "vue": "^3.5.25",
     "vue-tsc": "^3.1.5"
