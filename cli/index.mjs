@@ -1,4 +1,22 @@
 #!/usr/bin/env node
+/**
+ * artharexian-ui CLI
+ * 
+ * Component installer for artharexian-ui library.
+ * Downloads components from the registry and installs them to the user's project.
+ * 
+ * Commands:
+ *   init              - Install global styles
+ *   add <component>   - Add a component to the project
+ *   list              - List available components
+ * 
+ * Config:
+ *   Create artharexian-ui.json in project root to customize paths:
+ *   {
+ *     "components": "src/components/ui"
+ *   }
+ */
+
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
@@ -7,13 +25,48 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// Registry location (inside the npm package)
 const REGISTRY_DIR = path.join(__dirname, '..', 'registry')
 const REGISTRY_JSON = path.join(REGISTRY_DIR, 'registry.json')
 
+// Current working directory (where user runs the command)
 const cwd = process.env.INIT_CWD || process.cwd()
 
-// ---------- utils ----------
+// Default configuration
+const DEFAULT_CONFIG = {
+  components: 'src/components/ui',
+  styles: 'src/styles'
+}
 
+/**
+ * Load user configuration from artharexian-ui.json
+ * Falls back to defaults if config doesn't exist
+ */
+function loadConfig() {
+  const configPath = path.join(cwd, 'artharexian-ui.json')
+  if (fs.existsSync(configPath)) {
+    try {
+      const userConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
+      return { ...DEFAULT_CONFIG, ...userConfig }
+    } catch {
+      console.warn('Warning: Invalid artharexian-ui.json, using defaults')
+    }
+  }
+  return DEFAULT_CONFIG
+}
+
+/**
+ * Save configuration to artharexian-ui.json
+ */
+function saveConfig(config) {
+  const configPath = path.join(cwd, 'artharexian-ui.json')
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n')
+}
+
+/**
+ * Read and validate registry.json
+ * @returns {Object} Registry data
+ */
 function readRegistry() {
   if (!fs.existsSync(REGISTRY_JSON)) {
     console.error('Registry not found')
@@ -27,6 +80,12 @@ function readRegistry() {
   }
 }
 
+/**
+ * Copy file from registry to destination
+ * Skips if file already exists
+ * @param {string} src - Source path in registry
+ * @param {string} dest - Destination path in user project
+ */
 function copyFileSafe(src, dest) {
   if (!fs.existsSync(src)) {
     console.error(`Missing file in registry: ${path.basename(src)}`)
@@ -45,6 +104,9 @@ function copyFileSafe(src, dest) {
 
 // ---------- commands ----------
 
+/**
+ * List all available components from registry
+ */
 function listComponents() {
   const registry = readRegistry()
   console.log('Available components:\n')
@@ -53,7 +115,12 @@ function listComponents() {
   })
 }
 
+/**
+ * Add a component to the user's project
+ * @param {string} name - Component name
+ */
 function addComponent(name) {
+  const config = loadConfig()
   const registry = readRegistry()
   const entry = registry[name]
 
@@ -64,7 +131,7 @@ function addComponent(name) {
   }
 
   // Auto-install registry styles if not present
-  const stylesPath = path.join(cwd, 'src', 'styles')
+  const stylesPath = path.join(cwd, config.styles)
   const registryStyles = path.join(REGISTRY_DIR, 'styles')
   if (!fs.existsSync(stylesPath) && fs.existsSync(registryStyles)) {
     console.log('Styles not found. Installing...\n')
@@ -76,7 +143,7 @@ function addComponent(name) {
   }
 
   const srcDir = path.join(REGISTRY_DIR, name)
-  const destDir = path.join(cwd, 'src/components/ui', name)
+  const destDir = path.join(cwd, config.components, name)
 
   entry.files.forEach((file) => {
     const src = path.join(srcDir, file)
@@ -87,8 +154,12 @@ function addComponent(name) {
   console.log(`\n✔ ${name} installed`)
 }
 
+/**
+ * Initialize artharexian-ui in the project (install global styles)
+ */
 function init() {
-  const stylesDest = path.join(cwd, 'src', 'styles')
+  const config = loadConfig()
+  const stylesDest = path.join(cwd, config.styles)
   const registryStyles = path.join(REGISTRY_DIR, 'styles')
 
   if (!fs.existsSync(registryStyles)) {
@@ -105,6 +176,25 @@ function init() {
   console.log('\n✔ styles installed')
 }
 
+/**
+ * Initialize configuration file
+ */
+function initConfig() {
+  const configPath = path.join(cwd, 'artharexian-ui.json')
+  
+  if (fs.existsSync(configPath)) {
+    console.log('Config already exists:')
+    console.log(fs.readFileSync(configPath, 'utf8'))
+    return
+  }
+
+  const config = DEFAULT_CONFIG
+  saveConfig(config)
+  console.log('Created artharexian-ui.json:')
+  console.log(JSON.stringify(config, null, 2))
+  console.log('\nEdit this file to customize component installation paths')
+}
+
 // ---------- CLI ----------
 
 const args = process.argv.slice(2)
@@ -113,12 +203,27 @@ const component = args[1]
 
 if (!command) {
   console.log(`
-artharexian-ui
+artharexian-ui - Component installer
 
 Usage:
+  npx artharexian-ui init                 Install global styles
+  npx artharexian-ui init-config          Create configuration file
+  npx artharexian-ui add <component>      Add a component
+  npx artharexian-ui list                 List available components
+
+Options:
+  --help, -h  Show this help message
+
+Config:
+  Create artharexian-ui.json in project root:
+  {
+    "components": "src/components/ui",
+    "styles": "src/styles"
+  }
+
+Examples:
+  npx artharexian-ui add button-base
   npx artharexian-ui init
-  npx artharexian-ui add <component>
-  npx artharexian-ui list
 `)
   process.exit(0)
 }
@@ -139,6 +244,38 @@ if (command === 'add') {
 
 if (command === 'init') {
   init()
+  process.exit(0)
+}
+
+if (command === 'init-config') {
+  initConfig()
+  process.exit(0)
+}
+
+if (command === '--help' || command === '-h') {
+  console.log(`
+artharexian-ui - Component installer
+
+Usage:
+  npx artharexian-ui init                 Install global styles
+  npx artharexian-ui init-config          Create configuration file
+  npx artharexian-ui add <component>      Add a component
+  npx artharexian-ui list                 List available components
+
+Options:
+  --help, -h  Show this help message
+
+Config:
+  Create artharexian-ui.json in project root:
+  {
+    "components": "src/components/ui",
+    "styles": "src/styles"
+  }
+
+Examples:
+  npx artharexian-ui add button-base
+  npx artharexian-ui init
+`)
   process.exit(0)
 }
 
