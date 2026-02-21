@@ -1,0 +1,43 @@
+{
+  "button-base": {
+    "files": [
+      "ButtonBase.vue",
+      "index.ts",
+      "types.ts"
+    ]
+  },
+  "card-base": {
+    "files": [
+      "CardBase.vue",
+      "CardContent.vue",
+      "CardDescription.vue",
+      "CardFooter.vue",
+      "CardHeader.vue",
+      "CardTitle.vue"
+    ]
+  },
+  "input-base": {
+    "files": [
+      "InputBase.vue",
+      "types.ts"
+    ]
+  },
+  "range-base": {
+    "files": [
+      "RangeBase.vue",
+      "RangeOutput.vue",
+      "types.ts"
+    ]
+  },
+  "tabs": {
+    "files": [
+      "context.ts",
+      "TabsBase.vue",
+      "TabsIndicator.vue",
+      "TabsList.vue",
+      "TabsPanel.vue",
+      "TabsTab.vue",
+      "types.ts"
+    ]
+  }
+}
