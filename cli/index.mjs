@@ -40,22 +40,7 @@ const DEFAULT_CONFIG = {
 
 /**
  * Load user configuration from artharexian-ui.json
- * Auto-creates config if it doesn't exist
- */
-function ensureConfig() {
-  const configPath = path.join(cwd, 'artharexian-ui.json')
-
-  if (!fs.existsSync(configPath)) {
-    saveConfig(DEFAULT_CONFIG)
-    console.log('Created artharexian-ui.json')
-  }
-
-  return loadConfig()
-}
-
-/**
- * Load user configuration from artharexian-ui.json
- * Returns defaults if config doesn't exist (shouldn't happen after ensureConfig)
+ * Returns defaults if config doesn't exist
  */
 function loadConfig() {
   const configPath = path.join(cwd, 'artharexian-ui.json')
@@ -132,11 +117,11 @@ function listComponents() {
 
 /**
  * Add a component to the user's project
- * Auto-installs styles and config if needed
+ * Auto-installs styles if not present
  * @param {string} name - Component name
  */
 function addComponent(name) {
-  const config = ensureConfig()
+  const config = loadConfig()
   const registry = readRegistry()
   const entry = registry[name]
 
@@ -172,10 +157,9 @@ function addComponent(name) {
 
 /**
  * Initialize artharexian-ui in the project (install global styles)
- * Deprecated: styles are auto-installed with components
  */
 function init() {
-  const config = ensureConfig()
+  const config = loadConfig()
   const stylesDest = path.join(cwd, config.styles)
   const registryStyles = path.join(REGISTRY_DIR, 'styles')
 
@@ -193,6 +177,24 @@ function init() {
   console.log('\n✔ styles installed')
 }
 
+/**
+ * Create configuration file with default paths
+ */
+function initConfig() {
+  const configPath = path.join(cwd, 'artharexian-ui.json')
+  
+  if (fs.existsSync(configPath)) {
+    console.log('Config already exists:')
+    console.log(fs.readFileSync(configPath, 'utf8'))
+    return
+  }
+
+  saveConfig(DEFAULT_CONFIG)
+  console.log('Created artharexian-ui.json:')
+  console.log(JSON.stringify(DEFAULT_CONFIG, null, 2))
+  console.log('\nEdit this file to customize paths before installing components')
+}
+
 // ---------- CLI ----------
 
 const args = process.argv.slice(2)
@@ -204,21 +206,21 @@ if (!command || command === '--help' || command === '-h') {
 artharexian-ui - Component installer
 
 Usage:
-  npx artharexian-ui add <component>   Add a component (auto-installs styles)
+  npx artharexian-ui init              Install styles
+  npx artharexian-ui init-config       Create configuration file
+  npx artharexian-ui add <component>   Add a component
   npx artharexian-ui list              List available components
-  npx artharexian-ui init              Install styles only (optional)
 
 Config:
-  artharexian-ui.json is auto-created on first use.
-  Customize paths:
+  Create artharexian-ui.json to customize paths:
   {
     "components": "src/components/ui",
     "styles": "src/styles"
   }
 
 Examples:
-  npx artharexian-ui add button-base
-  npx artharexian-ui list
+  npx artharexian-ui init-config       # Create config first
+  npx artharexian-ui add button-base   # Install component
 `)
   process.exit(0)
 }
@@ -239,6 +241,11 @@ if (command === 'add') {
 
 if (command === 'init') {
   init()
+  process.exit(0)
+}
+
+if (command === 'init-config') {
+  initConfig()
   process.exit(0)
 }
 
