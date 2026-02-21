@@ -6,7 +6,6 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import dts from 'vite-plugin-dts'
 
 const dirname =
@@ -15,7 +14,6 @@ const dirname =
 export default defineConfig({
   plugins: [
     vue(),
-    cssInjectedByJsPlugin({ useStrictCSP: true, relativeCSSInjection: false }),
     dts({
       rollupTypes: true,
       tsconfigPath: './tsconfig.app.json',

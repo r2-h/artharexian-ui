@@ -1,7 +1,7 @@
 {
   "name": "artharexian-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.1.4",
+  "version": "0.1.12",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -21,7 +21,8 @@
       "types": "./dist/artharexian-ui.d.ts",
       "import": "./dist/artharexian-ui.es.js",
       "require": "./dist/artharexian-ui.umd.js"
-    }
+    },
+    "./css": "./dist/artharexian-ui.css"
   },
   "scripts": {
     "dev": "vite",
