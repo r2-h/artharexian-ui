@@ -23,11 +23,8 @@ function readRegistry() {
 }
 
 function ensureVueProject() {
-  const src = path.join(cwd, 'src')
-  if (!fs.existsSync(src)) {
-    console.error('Not a Vue project (missing src/)')
-    process.exit(1)
-  }
+  // Optional: could check for package.json or vue dependency
+  // For now, just ensure cwd is writable
 }
 
 function copyFileSafe(src, dest) {
@@ -53,8 +50,6 @@ function listComponents() {
 }
 
 function addComponent(name) {
-  ensureVueProject()
-
   const registry = readRegistry()
   const entry = registry[name]
 
@@ -65,7 +60,7 @@ function addComponent(name) {
   }
 
   // Auto-install styles if not present
-  const stylesPath = path.join(cwd, 'src/styles')
+  const stylesPath = path.join(cwd, 'src', 'styles')
   const registryStyles = path.join(REGISTRY_DIR, 'styles')
   if (!fs.existsSync(stylesPath) && fs.existsSync(registryStyles)) {
     console.log('Styles not found. Installing...\n')
@@ -89,20 +84,18 @@ function addComponent(name) {
 }
 
 function init() {
-  ensureVueProject()
+  const stylesDest = path.join(cwd, 'src', 'styles')
+  const registryStyles = path.join(REGISTRY_DIR, 'styles')
 
-  const stylesSrc = path.join(REGISTRY_DIR, 'styles')
-  const stylesDest = path.join(cwd, 'src/styles')
-
-  if (!fs.existsSync(stylesSrc)) {
+  if (!fs.existsSync(registryStyles)) {
     console.log('No global styles in registry')
     return
   }
 
   fs.mkdirSync(stylesDest, { recursive: true })
 
-  for (const file of fs.readdirSync(stylesSrc)) {
-    copyFileSafe(path.join(stylesSrc, file), path.join(stylesDest, file))
+  for (const file of fs.readdirSync(registryStyles)) {
+    copyFileSafe(path.join(registryStyles, file), path.join(stylesDest, file))
   }
 
   console.log('\n✔ styles installed')
