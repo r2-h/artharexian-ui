@@ -1,11 +1,17 @@
 {
   "button-base": {
+    "description": "Accessible button primitive",
     "files": [
       "ButtonBase.vue",
       "types.ts"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { ButtonBase } from '@/components/button-base'"
     ]
   },
   "card-base": {
+    "description": "Card container components",
     "files": [
       "CardBase.vue",
       "CardContent.vue",
@@ -13,32 +19,57 @@
       "CardFooter.vue",
       "CardHeader.vue",
       "CardTitle.vue"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { CardBase, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/card-base'"
     ]
   },
   "checkbox-base": {
+    "description": "Checkbox input primitive",
     "files": [
       "CheckboxBase.vue"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { CheckboxBase } from '@/components/checkbox-base'"
     ]
   },
   "input-base": {
+    "description": "Text input primitive",
     "files": [
       "InputBase.vue",
       "types.ts"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { InputBase } from '@/components/input-base'"
     ]
   },
   "range-base": {
+    "description": "Range slider primitive",
     "files": [
       "RangeBase.vue",
       "RangeOutput.vue",
       "types.ts"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { RangeBase, RangeOutput } from '@/components/range-base'"
     ]
   },
   "switch-base": {
+    "description": "Toggle switch primitive",
     "files": [
       "SwitchBase.vue"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { SwitchBase } from '@/components/switch-base'"
     ]
   },
   "tabs": {
+    "description": "Tab navigation components",
     "files": [
       "context.ts",
       "TabsBase.vue",
@@ -47,11 +78,20 @@
       "TabsPanel.vue",
       "TabsTab.vue",
       "types.ts"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { TabsBase, TabsList, TabsTab, TabsIndicator, TabsPanel } from '@/components/tabs'"
     ]
   },
   "theme-toggle": {
+    "description": "Dark/light theme toggle button",
     "files": [
       "ThemeToggle.vue"
+    ],
+    "dependencies": [],
+    "imports": [
+      "import { ThemeToggle } from '@/components/theme-toggle'"
     ]
   }
 }
