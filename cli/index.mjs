@@ -31,12 +31,6 @@ function detectProject() {
   }
 }
 
-function hasStyles(stylesPath) {
-  // Проверяет, есть ли уже файлы стилей в проекте
-  if (!fs.existsSync(stylesPath)) return false
-  return fs.readdirSync(stylesPath).some(f => f.endsWith('.css'))
-}
-
 function copyFiles(srcDir, destDir, files) {
   // Копирует указанные файлы из srcDir в destDir (только отсутствующие)
   fs.mkdirSync(destDir, { recursive: true })
@@ -84,11 +78,9 @@ function add(name) {
   const dest = path.join(cwd, config.components, name)
   copyFiles(src, dest, entry.files)
 
-  // Копируем стили, если их нет
+  // Копируем стили
   const stylesDest = path.join(cwd, config.styles)
-  if (!hasStyles(stylesDest)) {
-    copyFiles(STYLES_DIR, stylesDest, fs.readdirSync(STYLES_DIR))
-  }
+  copyFiles(STYLES_DIR, stylesDest, fs.readdirSync(STYLES_DIR))
 
   console.log(`\n✔ ${name} added`)
 }
