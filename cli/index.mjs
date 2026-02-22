@@ -1,253 +1,119 @@
-#!/usr/bin/env node
-/**
- * artharexian-ui CLI
- * 
- * Component installer for artharexian-ui library.
- * Downloads components from the registry and installs them to the user's project.
- * 
- * Commands:
- *   init              - Install global styles
- *   add <component>   - Add a component to the project
- *   list              - List available components
- * 
- * Config:
- *   Create artharexian-ui.json in project root to customize paths:
- *   {
- *     "components": "src/components/ui"
- *   }
- */
+#!/usr/bin/env node // Указывает системе запускать файл через Node.js (CLI-скрипт)
 
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url) // Получаем абсолютный путь к текущему файлу (аналог __filename)
+const __dirname = path.dirname(__filename) // Получаем директорию текущего файла (аналог __dirname)
 
-// Registry location (inside the npm package)
-const REGISTRY_DIR = path.join(__dirname, '..', 'registry')
-const REGISTRY_JSON = path.join(REGISTRY_DIR, 'registry.json')
+const COMPONENTS_DIR = path.join(__dirname, '..', 'src', 'components') // Путь к компонентам внутри пакета
+const STYLES_DIR = path.join(__dirname, '..', 'src', 'styles') // Путь к стилям внутри пакета
+const REGISTRY_JSON = path.join(__dirname, 'registry.json') // Путь к файлу registry.json
 
-// Current working directory (where user runs the command)
-const cwd = process.env.INIT_CWD || process.cwd()
+const cwd = process.env.INIT_CWD || process.cwd() // Текущая директория, где пользователь запустил CLI
 
-// Default configuration
-const DEFAULT_CONFIG = {
-  components: 'src/components/ui',
-  styles: 'src/styles'
-}
-
-/**
- * Load user configuration from artharexian-ui.json
- * Returns defaults if config doesn't exist
- */
-function loadConfig() {
-  const configPath = path.join(cwd, 'artharexian-ui.json')
-  if (fs.existsSync(configPath)) {
-    try {
-      const userConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
-      return { ...DEFAULT_CONFIG, ...userConfig }
-    } catch {
-      console.warn('Warning: Invalid artharexian-ui.json, using defaults')
-    }
-  }
-  return DEFAULT_CONFIG
-}
-
-/**
- * Save configuration to artharexian-ui.json
- */
-function saveConfig(config) {
-  const configPath = path.join(cwd, 'artharexian-ui.json')
-  fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n')
-}
-
-/**
- * Read and validate registry.json
- * @returns {Object} Registry data
- */
 function readRegistry() {
   if (!fs.existsSync(REGISTRY_JSON)) {
+    // Проверяем, существует ли registry.json
     console.error('Registry not found')
     process.exit(1)
   }
-  try {
-    return JSON.parse(fs.readFileSync(REGISTRY_JSON, 'utf8'))
-  } catch {
-    console.error('Invalid registry.json')
-    process.exit(1)
+  return JSON.parse(fs.readFileSync(REGISTRY_JSON, 'utf8'))
+}
+
+function detectProject() {
+  // Функция для автоопределения структуры проекта
+  const hasSrc = fs.existsSync(path.join(cwd, 'src')) // Проверяем, есть ли папка src
+  return {
+    components: hasSrc ? 'src/components/ui' : 'components/ui',
+    styles: hasSrc ? 'src/styles' : 'styles',
   }
 }
 
-/**
- * Copy file from registry to destination
- * Skips if file already exists
- * @param {string} src - Source path in registry
- * @param {string} dest - Destination path in user project
- */
-function copyFileSafe(src, dest) {
-  if (!fs.existsSync(src)) {
-    console.error(`Missing file in registry: ${path.basename(src)}`)
-    process.exit(1)
+function copyDir(src, dest) {
+  // Рекурсивная функция копирования папки
+  fs.mkdirSync(dest, { recursive: true }) // Создаём папку назначения (если её нет)
+  for (const file of fs.readdirSync(src)) {
+    // Перебираем все файлы и папки в исходной директории
+    const s = path.join(src, file) // Формируем полный путь к исходному файлу
+    const d = path.join(dest, file) // Формируем полный путь к файлу назначения
+    if (fs.statSync(s).isDirectory()) {
+      // Если это папка
+      copyDir(s, d) // Рекурсивно копируем её содержимое
+    } else {
+      // Если это файл
+      if (!fs.existsSync(d)) {
+        // Проверяем, не существует ли файл уже
+        fs.copyFileSync(s, d) // Копируем файл
+        console.log('add', path.relative(cwd, d)) // Выводим относительный путь добавленного файла
+      }
+    }
   }
-  if (fs.existsSync(dest)) {
-    const rel = path.relative(cwd, dest)
-    console.log(`skip ${rel} (exists)`)
+}
+
+function init() {
+  const configPath = path.join(cwd, 'rxn-ui.json') // Путь к конфигурационному файлу
+  if (fs.existsSync(configPath)) {
+    console.log('✔ already initialized')
     return
   }
-  fs.mkdirSync(path.dirname(dest), { recursive: true })
-  fs.copyFileSync(src, dest)
-  const rel = path.relative(cwd, dest)
-  console.log(`add  ${rel}`)
+
+  const config = detectProject()
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2)) // Сохраняем конфиг в файл
+
+  if (fs.existsSync(STYLES_DIR)) {
+    copyDir(STYLES_DIR, path.join(cwd, config.styles)) // Копируем стили в проект пользователя
+  }
+
+  console.log('✔ rxn-ui initialized')
 }
 
-// ---------- commands ----------
-
-/**
- * List all available components from registry
- */
-function listComponents() {
-  const registry = readRegistry()
-  console.log('Available components:\n')
-  Object.keys(registry).forEach((name) => {
-    console.log(`  ${name}`)
-  })
-}
-
-/**
- * Add a component to the user's project
- * Auto-installs styles if not present
- * @param {string} name - Component name
- */
-function addComponent(name) {
-  const config = loadConfig()
-  const registry = readRegistry()
-  const entry = registry[name]
+function add(name) {
+  const registry = readRegistry() // Читаем registry.json
+  const entry = registry[name] // Получаем запись компонента по имени
 
   if (!entry) {
-    console.error(`Component not found: ${name}\n`)
-    listComponents()
+    // Если компонент не найден
+    console.error('Component not found:', name)
     process.exit(1)
   }
 
-  // Auto-install registry styles if not present
-  const stylesPath = path.join(cwd, config.styles)
-  const registryStyles = path.join(REGISTRY_DIR, 'styles')
-  if (!fs.existsSync(stylesPath) && fs.existsSync(registryStyles)) {
-    console.log('Styles not found. Installing...\n')
-    fs.mkdirSync(stylesPath, { recursive: true })
-    for (const file of fs.readdirSync(registryStyles)) {
-      copyFileSafe(path.join(registryStyles, file), path.join(stylesPath, file))
+  const configPath = path.join(cwd, 'rxn-ui.json') // Путь к конфигу
+  if (!fs.existsSync(configPath)) {
+    console.log('Initializing...\n') // Сообщаем, что запускается инициализация
+    init() // Выполняем init автоматически
+  }
+
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8')) // Загружаем конфигурацию
+
+  const src = path.join(COMPONENTS_DIR, name) // Путь к компоненту в пакете
+  const dest = path.join(cwd, config.components, name) // Путь установки компонента в проекте
+
+  fs.mkdirSync(dest, { recursive: true })
+  for (const file of entry.files) {
+    const s = path.join(src, file)
+    const d = path.join(dest, file)
+    if (fs.existsSync(s)) {
+      fs.copyFileSync(s, d)
+      console.log('add', path.relative(cwd, d))
     }
-    console.log('')
   }
 
-  const srcDir = path.join(REGISTRY_DIR, name)
-  const destDir = path.join(cwd, config.components, name)
-
-  entry.files.forEach((file) => {
-    const src = path.join(srcDir, file)
-    const dest = path.join(destDir, file)
-    copyFileSafe(src, dest)
-  })
-
-  console.log(`\n✔ ${name} installed`)
+  console.log(`\n✔ ${name} added`)
 }
 
-/**
- * Initialize artharexian-ui in the project (install global styles)
- */
-function init() {
-  const config = loadConfig()
-  const stylesDest = path.join(cwd, config.styles)
-  const registryStyles = path.join(REGISTRY_DIR, 'styles')
+const [cmd, arg] = process.argv.slice(2) // Получаем аргументы командной строки
 
-  if (!fs.existsSync(registryStyles)) {
-    console.log('No global styles in registry')
-    return
-  }
-
-  fs.mkdirSync(stylesDest, { recursive: true })
-
-  for (const file of fs.readdirSync(registryStyles)) {
-    copyFileSafe(path.join(registryStyles, file), path.join(stylesDest, file))
-  }
-
-  console.log('\n✔ styles installed')
-}
-
-/**
- * Create configuration file with default paths
- */
-function initConfig() {
-  const configPath = path.join(cwd, 'artharexian-ui.json')
-  
-  if (fs.existsSync(configPath)) {
-    console.log('Config already exists:')
-    console.log(fs.readFileSync(configPath, 'utf8'))
-    return
-  }
-
-  saveConfig(DEFAULT_CONFIG)
-  console.log('Created artharexian-ui.json:')
-  console.log(JSON.stringify(DEFAULT_CONFIG, null, 2))
-  console.log('\nEdit this file to customize paths before installing components')
-}
-
-// ---------- CLI ----------
-
-const args = process.argv.slice(2)
-const command = args[0]
-const component = args[1]
-
-if (!command || command === '--help' || command === '-h') {
-  console.log(`
-artharexian-ui - Component installer
+if (cmd === 'init') init()
+else if (cmd === 'add') add(arg)
+else {
+  console.log(` 
+rxn-ui
 
 Usage:
-  npx artharexian-ui init              Install styles
-  npx artharexian-ui init-config       Create configuration file
-  npx artharexian-ui add <component>   Add a component
-  npx artharexian-ui list              List available components
-
-Config:
-  Create artharexian-ui.json to customize paths:
-  {
-    "components": "src/components/ui",
-    "styles": "src/styles"
-  }
-
-Examples:
-  npx artharexian-ui init-config       # Create config first
-  npx artharexian-ui add button-base   # Install component
+  npx rxn-ui init
+  npx rxn-ui add button
 `)
-  process.exit(0)
 }
-
-if (command === 'list') {
-  listComponents()
-  process.exit(0)
-}
-
-if (command === 'add') {
-  if (!component) {
-    console.error('Component name required')
-    process.exit(1)
-  }
-  addComponent(component)
-  process.exit(0)
-}
-
-if (command === 'init') {
-  init()
-  process.exit(0)
-}
-
-if (command === 'init-config') {
-  initConfig()
-  process.exit(0)
-}
-
-console.error(`Unknown command: ${command}`)
-process.exit(1)
