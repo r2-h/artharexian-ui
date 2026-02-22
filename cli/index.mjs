@@ -9,6 +9,7 @@ const __filename = fileURLToPath(import.meta.url) // Получаем абсол
 const __dirname = path.dirname(__filename) // Получаем директорию текущего файла (аналог __dirname)
 
 const COMPONENTS_DIR = path.join(__dirname, '..', 'src', 'components') // Путь к компонентам внутри пакета
+const STYLES_DIR = path.join(__dirname, '..', 'src', 'styles') // Путь к стилям внутри пакета
 const REGISTRY_JSON = path.join(__dirname, 'registry.json') // Путь к файлу registry.json
 
 const cwd = process.env.INIT_CWD || process.cwd() // Текущая директория, где пользователь запустил CLI
@@ -23,11 +24,29 @@ function readRegistry() {
 }
 
 function detectProject() {
-  // Функция для автоопределения структуры проекта
-  const hasSrc = fs.existsSync(path.join(cwd, 'src')) // Проверяем, есть ли папка src
+  const hasSrc = fs.existsSync(path.join(cwd, 'src'))
   return {
     components: hasSrc ? 'src/shared/components' : 'components',
     styles: hasSrc ? 'src/app/styles' : 'styles',
+  }
+}
+
+function hasStyles(stylesPath) {
+  // Проверяет, есть ли уже файлы стилей в проекте
+  if (!fs.existsSync(stylesPath)) return false
+  return fs.readdirSync(stylesPath).some(f => f.endsWith('.css'))
+}
+
+function copyFiles(srcDir, destDir, files) {
+  // Копирует указанные файлы из srcDir в destDir (только отсутствующие)
+  fs.mkdirSync(destDir, { recursive: true })
+  for (const file of files) {
+    const s = path.join(srcDir, file)
+    const d = path.join(destDir, file)
+    if (fs.existsSync(s) && !fs.existsSync(d)) {
+      fs.copyFileSync(s, d)
+      console.log('add', path.relative(cwd, d))
+    }
   }
 }
 
@@ -58,19 +77,17 @@ function add(name) {
     process.exit(1)
   }
 
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8')) // Загружаем конфигурацию
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'))
 
-  const src = path.join(COMPONENTS_DIR, name) // Путь к компоненту в пакете
-  const dest = path.join(cwd, config.components, name) // Путь установки компонента в проекте
+  // Копируем компонент
+  const src = path.join(COMPONENTS_DIR, name)
+  const dest = path.join(cwd, config.components, name)
+  copyFiles(src, dest, entry.files)
 
-  fs.mkdirSync(dest, { recursive: true })
-  for (const file of entry.files) {
-    const s = path.join(src, file)
-    const d = path.join(dest, file)
-    if (fs.existsSync(s)) {
-      fs.copyFileSync(s, d)
-      console.log('add', path.relative(cwd, d))
-    }
+  // Копируем стили, если их нет
+  const stylesDest = path.join(cwd, config.styles)
+  if (!hasStyles(stylesDest)) {
+    copyFiles(STYLES_DIR, stylesDest, fs.readdirSync(STYLES_DIR))
   }
 
   console.log(`\n✔ ${name} added`)
