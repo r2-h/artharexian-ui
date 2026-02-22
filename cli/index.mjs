@@ -1,4 +1,4 @@
-#!/usr/bin/env node // Указывает системе запускать файл через Node.js (CLI-скрипт)
+#!/usr/bin/env node
 
 import fs from 'node:fs'
 import path from 'node:path'
