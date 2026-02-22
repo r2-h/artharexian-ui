@@ -9,7 +9,6 @@ const __filename = fileURLToPath(import.meta.url) // Получаем абсол
 const __dirname = path.dirname(__filename) // Получаем директорию текущего файла (аналог __dirname)
 
 const COMPONENTS_DIR = path.join(__dirname, '..', 'src', 'components') // Путь к компонентам внутри пакета
-const STYLES_DIR = path.join(__dirname, '..', 'src', 'styles') // Путь к стилям внутри пакета
 const REGISTRY_JSON = path.join(__dirname, 'registry.json') // Путь к файлу registry.json
 
 const cwd = process.env.INIT_CWD || process.cwd() // Текущая директория, где пользователь запустил CLI
@@ -27,29 +26,8 @@ function detectProject() {
   // Функция для автоопределения структуры проекта
   const hasSrc = fs.existsSync(path.join(cwd, 'src')) // Проверяем, есть ли папка src
   return {
-    components: hasSrc ? 'src/components/ui' : 'components/ui',
-    styles: hasSrc ? 'src/styles' : 'styles',
-  }
-}
-
-function copyDir(src, dest) {
-  // Рекурсивная функция копирования папки
-  fs.mkdirSync(dest, { recursive: true }) // Создаём папку назначения (если её нет)
-  for (const file of fs.readdirSync(src)) {
-    // Перебираем все файлы и папки в исходной директории
-    const s = path.join(src, file) // Формируем полный путь к исходному файлу
-    const d = path.join(dest, file) // Формируем полный путь к файлу назначения
-    if (fs.statSync(s).isDirectory()) {
-      // Если это папка
-      copyDir(s, d) // Рекурсивно копируем её содержимое
-    } else {
-      // Если это файл
-      if (!fs.existsSync(d)) {
-        // Проверяем, не существует ли файл уже
-        fs.copyFileSync(s, d) // Копируем файл
-        console.log('add', path.relative(cwd, d)) // Выводим относительный путь добавленного файла
-      }
-    }
+    components: hasSrc ? 'src/shared/components' : 'components',
+    styles: hasSrc ? 'src/app/styles' : 'styles',
   }
 }
 
@@ -59,14 +37,8 @@ function init() {
     console.log('✔ already initialized')
     return
   }
-
   const config = detectProject()
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2)) // Сохраняем конфиг в файл
-
-  if (fs.existsSync(STYLES_DIR)) {
-    copyDir(STYLES_DIR, path.join(cwd, config.styles)) // Копируем стили в проект пользователя
-  }
-
   console.log('✔ rxn-ui initialized')
 }
 
@@ -82,8 +54,8 @@ function add(name) {
 
   const configPath = path.join(cwd, 'rxn-ui.json') // Путь к конфигу
   if (!fs.existsSync(configPath)) {
-    console.log('Initializing...\n') // Сообщаем, что запускается инициализация
-    init() // Выполняем init автоматически
+    console.log('You should initialize...\n npx rxn-ui init')
+    process.exit(1)
   }
 
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8')) // Загружаем конфигурацию
@@ -114,6 +86,6 @@ rxn-ui
 
 Usage:
   npx rxn-ui init
-  npx rxn-ui add button
+  npx rxn-ui add button-base
 `)
 }
