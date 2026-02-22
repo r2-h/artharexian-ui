@@ -21,13 +21,5 @@ export function detectProject() {
   return {
     components: hasSrc ? 'src/shared/components' : 'components',
     styles: hasSrc ? 'src/app/styles' : 'styles',
-<<<<<<< HEAD
-=======
-    aliases: {
-      '@': '.',
-      '@components': hasSrc ? 'src/shared/components' : 'components',
-      '@styles': hasSrc ? 'src/app/styles' : 'styles',
-    },
->>>>>>> 5ad45b5eea21858c41198b6c8c3bfd2d6ce8f182
   }
 }
