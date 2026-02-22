@@ -2,7 +2,6 @@
   "button-base": {
     "files": [
       "ButtonBase.vue",
-      "index.ts",
       "types.ts"
     ]
   },
@@ -14,6 +13,11 @@
       "CardFooter.vue",
       "CardHeader.vue",
       "CardTitle.vue"
+    ]
+  },
+  "checkbox-base": {
+    "files": [
+      "CheckboxBase.vue"
     ]
   },
   "input-base": {
@@ -29,6 +33,11 @@
       "types.ts"
     ]
   },
+  "switch-base": {
+    "files": [
+      "SwitchBase.vue"
+    ]
+  },
   "tabs": {
     "files": [
       "context.ts",
@@ -38,6 +47,11 @@
       "TabsPanel.vue",
       "TabsTab.vue",
       "types.ts"
+    ]
+  },
+  "theme-toggle": {
+    "files": [
+      "ThemeToggle.vue"
     ]
   }
 }

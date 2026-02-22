@@ -1,7 +1,7 @@
 {
-  "name": "artharexian-ui",
+  "name": "rxn-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.3.6",
+  "version": "0.4.1",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -11,11 +11,12 @@
     "url": "git+https://github.com/r2-h/artharexian-ui.git"
   },
   "bin": {
-    "artharexian-ui": "./cli/index.mjs"
+    "rxn-ui": "./cli/index.mjs"
   },
   "files": [
     "cli",
-    "registry"
+    "src/components",
+    "src/styles"
   ],
   "engines": {
     "node": ">=18"
@@ -24,9 +25,7 @@
     "dev": "vite",
     "format": "prettier --write .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "build:registry": "node scripts/build-registry.mjs",
-    "prepublishOnly": "npm run build:registry"
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
