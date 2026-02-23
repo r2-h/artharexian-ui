@@ -315,14 +315,6 @@
     --radius-3xl: 2.4rem;
     --radius-4xl: 3.2rem;
 
-    --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
     --shadow-raised:
       2px 2px 6px var(--color-shadow), -2px -2px 6px var(--color-highlight),
       inset 0px 0px 0px var(--color-shadow), inset 0px 0px 0px var(--color-highlight),
@@ -330,26 +322,6 @@
     --shadow-inset:
       1px 1px 2px var(--color-shadow), -1px -1px 2px var(--color-highlight),
       inset 2px 2px 6px var(--color-shadow), inset -2px -2px 6px var(--color-highlight);
-
-    --inset-shadow-2xs: inset 0 1px rgb(0 0 0 / 0.05);
-    --inset-shadow-xs: inset 0 1px 1px rgb(0 0 0 / 0.05);
-    --inset-shadow-sm: inset 0 2px 4px rgb(0 0 0 / 0.05);
-
-    --drop-shadow-xs: 0 1px 1px rgb(0 0 0 / 0.05);
-    --drop-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.15);
-    --drop-shadow-md: 0 3px 3px rgb(0 0 0 / 0.12);
-    --drop-shadow-lg: 0 4px 4px rgb(0 0 0 / 0.15);
-    --drop-shadow-xl: 0 9px 7px rgb(0 0 0 / 0.1);
-    --drop-shadow-2xl: 0 25px 25px rgb(0 0 0 / 0.15);
-
-    --text-shadow-2xs: 0px 1px 0px rgb(0 0 0 / 0.15);
-    --text-shadow-xs: 0px 1px 1px rgb(0 0 0 / 0.2);
-    --text-shadow-sm:
-      0px 1px 0px rgb(0 0 0 / 0.075), 0px 1px 1px rgb(0 0 0 / 0.075), 0px 2px 2px rgb(0 0 0 / 0.075);
-    --text-shadow-md:
-      0px 1px 1px rgb(0 0 0 / 0.1), 0px 1px 2px rgb(0 0 0 / 0.1), 0px 2px 4px rgb(0 0 0 / 0.1);
-    --text-shadow-lg:
-      0px 1px 2px rgb(0 0 0 / 0.1), 0px 3px 2px rgb(0 0 0 / 0.1), 0px 4px 8px rgb(0 0 0 / 0.1);
 
     --background: light-dark(var(--color-zinc-200), var(--color-zinc-900));
     --foreground: light-dark(var(--color-zinc-700), var(--color-zinc-100));
@@ -360,15 +332,11 @@
     --color-warning: light-dark(var(--color-orange-600), var(--color-orange-400));
     --color-success: light-dark(var(--color-green-600), var(--color-green-400));
     --color-info: light-dark(var(--color-sky-600), var(--color-sky-400));
-    --card: light-dark(var(--color-neutral-200), var(--color-neutral-900));
-    --card-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --primary: light-dark(
       oklch(from var(--color-indigo-600) l calc(c * 0.75) h),
       var(--color-indigo-400)
     );
     --primary-foreground: var(--color-neutral-200);
-    --secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-    --secondary-foreground: light-dark(var(--color-neutral-900), var(--color-neutral-200));
     --muted: light-dark(var(--color-zinc-300), var(--color-zinc-700));
     --muted-foreground: light-dark(var(--color-zinc-600), var(--color-zinc-400));
 
