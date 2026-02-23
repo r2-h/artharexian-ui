@@ -1,14 +1,9 @@
 {
   "button-base": {
     "description": "Accessible button primitive",
-    "files": [
-      "ButtonBase.vue",
-      "types.ts"
-    ],
+    "files": ["ButtonBase.vue", "types.ts"],
     "dependencies": [],
-    "imports": [
-      "import { ButtonBase } from '@/components/button-base'"
-    ]
+    "imports": ["import { ButtonBase } from '@/components/button-base'"]
   },
   "card-base": {
     "description": "Card container components",
@@ -27,46 +22,27 @@
   },
   "checkbox-base": {
     "description": "Checkbox input primitive",
-    "files": [
-      "CheckboxBase.vue"
-    ],
+    "files": ["CheckboxBase.vue"],
     "dependencies": [],
-    "imports": [
-      "import { CheckboxBase } from '@/components/checkbox-base'"
-    ]
+    "imports": ["import { CheckboxBase } from '@/components/checkbox-base'"]
   },
   "input-base": {
     "description": "Text input primitive",
-    "files": [
-      "InputBase.vue",
-      "types.ts"
-    ],
+    "files": ["InputBase.vue", "types.ts"],
     "dependencies": [],
-    "imports": [
-      "import { InputBase } from '@/components/input-base'"
-    ]
+    "imports": ["import { InputBase } from '@/components/input-base'"]
   },
   "range-base": {
     "description": "Range slider primitive",
-    "files": [
-      "RangeBase.vue",
-      "RangeOutput.vue",
-      "types.ts"
-    ],
+    "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"],
     "dependencies": [],
-    "imports": [
-      "import { RangeBase, RangeOutput } from '@/components/range-base'"
-    ]
+    "imports": ["import { RangeBase, RangeOutput } from '@/components/range-base'"]
   },
   "switch-base": {
     "description": "Toggle switch primitive",
-    "files": [
-      "SwitchBase.vue"
-    ],
+    "files": ["SwitchBase.vue"],
     "dependencies": [],
-    "imports": [
-      "import { SwitchBase } from '@/components/switch-base'"
-    ]
+    "imports": ["import { SwitchBase } from '@/components/switch-base'"]
   },
   "tabs": {
     "description": "Tab navigation components",
@@ -84,14 +60,10 @@
       "import { TabsBase, TabsList, TabsTab, TabsIndicator, TabsPanel } from '@/components/tabs'"
     ]
   },
-  "theme-toggle": {
-    "description": "Dark/light theme toggle button",
-    "files": [
-      "ThemeToggle.vue"
-    ],
+  "use-theme": {
+    "description": "Composable theme switcher",
+    "files": ["useTheme.ts"],
     "dependencies": [],
-    "imports": [
-      "import { ThemeToggle } from '@/components/theme-toggle'"
-    ]
+    "imports": ["import { useTheme } from '@/composables/useTheme'"]
   }
 }

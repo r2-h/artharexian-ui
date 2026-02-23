@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MoonIcon from '../assets/MoonIcon.vue'
-import SunIcon from '../assets/SunIcon.vue'
-import useTheme from '../composables/useTheme'
-import ButtonBase from './button-base/ButtonBase.vue'
+import MoonIcon from '../../assets/MoonIcon.vue'
+import SunIcon from '../../assets/SunIcon.vue'
+import useTheme from '../../composables/useTheme'
+import ButtonBase from '../button-base/ButtonBase.vue'
 
 const { currentTheme, toggleTheme } = useTheme()
 </script>

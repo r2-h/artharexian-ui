@@ -21,5 +21,6 @@ export function detectProject() {
   return {
     components: hasSrc ? 'src/shared/components' : 'components',
     styles: hasSrc ? 'src/app/styles' : 'styles',
+    composables: hasSrc ? 'src/shared/composables' : 'composables',
   }
 }
