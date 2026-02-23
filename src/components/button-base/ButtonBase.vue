@@ -50,7 +50,6 @@ const {
     opacity: 0.85;
   }
 }
-
 .radius-default {
   border-radius: var(--radius-xl);
   padding-inline: 1.6rem;
@@ -63,7 +62,6 @@ const {
   min-width: 5rem;
   aspect-ratio: 1;
 }
-
 .primary {
   color: var(--primary);
   background-image: linear-gradient(
@@ -72,7 +70,6 @@ const {
     color-mix(in oklch, var(--primary), transparent 78%)
   );
 }
-
 .default {
   background-image: linear-gradient(
     to top left,
@@ -80,7 +77,6 @@ const {
     color-mix(in oklch, var(--muted), transparent 5%)
   );
 }
-
 .danger {
   color: var(--color-danger);
   background-image: linear-gradient(
@@ -88,5 +84,10 @@ const {
     color-mix(in oklch, var(--color-danger), transparent 97%),
     color-mix(in oklch, var(--color-danger), transparent 78%)
   );
+}
+.secondary {
+  border: none;
+  box-shadow: var(--shadow-inset);
+  color: var(--muted-foreground);
 }
 </style>

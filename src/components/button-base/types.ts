@@ -1,4 +1,4 @@
-export type ButtonVariant = 'primary' | 'default' | 'danger'
+export type ButtonVariant = 'primary' | 'default' | 'danger' | 'secondary'
 export type ButtonShape = 'radius-default' | 'radius-circle'
 
 export type ButtonProps = {
