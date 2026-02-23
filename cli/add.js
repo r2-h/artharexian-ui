@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { cwd, STYLES_FILES, getRegistryUrl } from './constants.js'
+import { STYLES_FILES, cwd, getRegistryUrl } from './constants.js'
 import { loadConfig } from './utils/config.js'
 import { fetchFile, fetchJSON } from './utils/fetch.js'
 import { getSourceUrl } from './utils/getSourceUrl.js'
