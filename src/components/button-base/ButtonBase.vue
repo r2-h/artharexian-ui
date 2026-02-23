@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import type { ButtonProps } from './types'
 
-const { variant = 'default', shape = 'radius-default', is = 'button' } = defineProps<ButtonProps>()
+const {
+  variant = 'default',
+  shape = 'radius-default',
+  is = 'button',
+  type = 'button',
+} = defineProps<ButtonProps>()
 </script>
 
 <template>
-  <component :is :class="['btn', shape, variant]" :aria-busy="isPending">
+  <component
+    :is
+    :class="['btn', shape, variant]"
+    :type="is === 'button' ? type : null"
+    :aria-busy="isPending"
+  >
     <slot>button</slot>
   </component>
 </template>
