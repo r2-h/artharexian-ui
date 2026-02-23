@@ -23,6 +23,7 @@ const {
 <style scoped>
 .btn {
   display: inline-flex;
+  width: fit-content;
   text-wrap: nowrap;
   font-weight: 500;
   align-items: center;
