@@ -53,7 +53,6 @@ input {
 }
 
 .error-info {
-  font-size: 0.8rem;
   color: var(--color-danger);
   margin-top: 0.4rem;
 }

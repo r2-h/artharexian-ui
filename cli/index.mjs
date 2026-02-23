@@ -8,7 +8,6 @@ import { detectProject, loadConfig, saveConfig } from './utils/config.js'
 import { fetchFile, fetchJSON } from './utils/fetch.js'
 import { colors, error, info, log, success } from './utils/logger.js'
 
-// GitHub repository info
 const GITHUB_REPO = 'r2-h/artharexian-ui'
 const GITHUB_RAW = `https://raw.githubusercontent.com/${GITHUB_REPO}/main`
 
@@ -114,8 +113,6 @@ async function add(name, cmdOptions = {}) {
 
   await downloadStyles(stylesDir, tag)
   showDependencies(entry)
-
-  success(`${name} added successfully`)
 
   if (entry.imports) {
     log(`\n${colors.bold}Usage:${colors.reset}`)

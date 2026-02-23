@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-withDefaults(defineProps<{ as?: 'div' | 'section' | 'ul' | 'main' | 'ol' }>(), { as: 'main' })
+withDefaults(defineProps<{ is?: 'div' | 'section' | 'ul' | 'main' | 'ol' | 'form' }>(), {
+  is: 'main',
+})
 </script>
 
 <template>
-  <component :is="as" class="content">
+  <component :is class="content">
     <slot />
   </component>
 </template>
