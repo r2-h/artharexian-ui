@@ -34,7 +34,7 @@ export async function add(name, cmdOptions = {}) {
 
   const type = name.startsWith('use-') ? 'composables' : 'components'
   const itemsToDownload = [
-    { type, name, files: entry.files, dir: config[type] },
+    { type, name: type === 'components' ? name : null, files: entry.files, dir: config[type] },
     { type: 'styles', name: null, files: STYLES_FILES, dir: config.styles },
   ]
 
