@@ -1,12 +1,12 @@
 {
   "button-base": {
-    "description": "Accessible button primitive",
+    "type": "components",
     "files": ["ButtonBase.vue", "types.ts"],
-    "dependencies": [],
-    "imports": ["import { ButtonBase } from '@/components/button-base'"]
+    "description": "Accessible button primitive",
+    "dependencies": []
   },
   "card-base": {
-    "description": "Card container components",
+    "type": "components",
     "files": [
       "CardBase.vue",
       "CardContent.vue",
@@ -15,37 +15,35 @@
       "CardHeader.vue",
       "CardTitle.vue"
     ],
-    "dependencies": [],
-    "imports": [
-      "import { CardBase, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/card-base'"
-    ]
+    "description": "Card container components",
+    "dependencies": []
   },
   "checkbox-base": {
-    "description": "Checkbox input primitive",
+    "type": "components",
     "files": ["CheckboxBase.vue"],
-    "dependencies": [],
-    "imports": ["import { CheckboxBase } from '@/components/checkbox-base'"]
+    "description": "Checkbox input primitive",
+    "dependencies": []
   },
   "input-base": {
-    "description": "Text input primitive",
+    "type": "components",
     "files": ["InputBase.vue", "types.ts"],
-    "dependencies": [],
-    "imports": ["import { InputBase } from '@/components/input-base'"]
+    "description": "Text input primitive",
+    "dependencies": []
   },
   "range-base": {
-    "description": "Range slider primitive",
+    "type": "components",
     "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"],
-    "dependencies": [],
-    "imports": ["import { RangeBase, RangeOutput } from '@/components/range-base'"]
+    "description": "Range slider primitive",
+    "dependencies": []
   },
   "switch-base": {
-    "description": "Toggle switch primitive",
+    "type": "components",
     "files": ["SwitchBase.vue"],
-    "dependencies": [],
-    "imports": ["import { SwitchBase } from '@/components/switch-base'"]
+    "description": "Toggle switch primitive",
+    "dependencies": []
   },
   "tabs": {
-    "description": "Tab navigation components",
+    "type": "components",
     "files": [
       "context.ts",
       "TabsBase.vue",
@@ -55,15 +53,13 @@
       "TabsTab.vue",
       "types.ts"
     ],
-    "dependencies": [],
-    "imports": [
-      "import { TabsBase, TabsList, TabsTab, TabsIndicator, TabsPanel } from '@/components/tabs'"
-    ]
+    "description": "Tab navigation components",
+    "dependencies": []
   },
   "use-theme": {
-    "description": "Composable theme switcher",
+    "type": "composables",
     "files": ["useTheme.ts"],
-    "dependencies": [],
-    "imports": ["import { useTheme } from '@/composables/useTheme'"]
+    "description": "Composable theme switcher",
+    "dependencies": []
   }
 }

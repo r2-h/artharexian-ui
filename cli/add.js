@@ -7,7 +7,7 @@ import { fetchFile, fetchJSON } from './utils/fetch.js'
 import { getSourceUrl } from './utils/getSourceUrl.js'
 import { log } from './utils/logger.js'
 
-export async function add(name, cmdOptions = {}) {
+export async function add(componentName, cmdOptions = {}) {
   const config = loadConfig()
   if (!config) {
     log.error('Not initialized. Run: npx rxn-ui init')
@@ -25,45 +25,51 @@ export async function add(name, cmdOptions = {}) {
     process.exit(1)
   }
 
-  const entry = registry[name]
+  const entry = registry[componentName]
   if (!entry) {
-    log.error(`Component "${name}" not found`)
+    log.error(`Component "${componentName}" not found`)
     log.info(`Available components: ${Object.keys(registry).join(', ')}`)
     process.exit(1)
   }
 
-  const type = name.startsWith('use-') ? 'composables' : 'components'
-  const itemsToDownload = [
-    { type, name: type === 'components' ? name : null, files: entry.files, dir: config[type] },
-    { type: 'styles', name: null, files: STYLES_FILES, dir: config.styles },
-  ]
+  // Если файлов больше одного — скачиваем в папку с именем компонента
+  const isMultipleFiles = entry.files.length > 1
+  const destDir = isMultipleFiles
+    ? path.join(cwd, config[entry.type], componentName)
+    : path.join(cwd, config[entry.type])
 
-  log.bold(`\nAdding ${name}...`)
+  log.bold(`\nAdding ${componentName}...`)
 
-  for (const item of itemsToDownload) {
-    const destDir = path.join(cwd, item.dir)
-    fs.mkdirSync(destDir, { recursive: true })
-    await downloadItems({ type: item.type, name: item.name, files: item.files, tag, destDir })
-  }
+  // Скачиваем файлы компонента
+  await downloadItems({
+    type: entry.type,
+    componentName: isMultipleFiles ? componentName : null,
+    files: entry.files,
+    tag,
+    destDir,
+  })
 
-  if (entry.imports) {
-    log.bold(`\nUsage:`)
-    for (const imp of entry.imports) {
-      log(`  ${imp}`)
-    }
-  }
+  // Скачиваем стили
+  const stylesDir = path.join(cwd, config.styles)
+  await downloadItems({
+    type: 'styles',
+    componentName: null,
+    files: STYLES_FILES,
+    tag,
+    destDir: stylesDir,
+  })
 }
 
-async function downloadItems({ type, name, files, tag, destDir }) {
+async function downloadItems({ type, componentName, files, tag, destDir }) {
   log.bold(`\nAdding ${type}...`)
+  fs.mkdirSync(destDir, { recursive: true })
+
   for (const file of files) {
-    const url = getSourceUrl(type, name, file, tag)
-    const destDirNested = name ? path.join(destDir, name) : destDir
-    const destPath = path.join(destDirNested, file)
+    const url = getSourceUrl(type, componentName, file, tag)
+    const destPath = path.join(destDir, file)
 
     try {
       const content = await fetchFile(url)
-      fs.mkdirSync(destDirNested, { recursive: true })
       fs.writeFileSync(destPath, content)
       log.success(`Added ${path.relative(cwd, destPath)}`)
     } catch (err) {
