@@ -1,9 +1,7 @@
 {
   "button-base": {
     "type": "components",
-    "files": ["ButtonBase.vue", "types.ts"],
-    "description": "Accessible button primitive",
-    "dependencies": []
+    "files": ["ButtonBase.vue", "types.ts"]
   },
   "card-base": {
     "type": "components",
@@ -14,33 +12,23 @@
       "CardFooter.vue",
       "CardHeader.vue",
       "CardTitle.vue"
-    ],
-    "description": "Card container components",
-    "dependencies": []
+    ]
   },
   "checkbox-base": {
     "type": "components",
-    "files": ["CheckboxBase.vue"],
-    "description": "Checkbox input primitive",
-    "dependencies": []
+    "files": ["CheckboxBase.vue"]
   },
   "input-base": {
     "type": "components",
-    "files": ["InputBase.vue", "types.ts"],
-    "description": "Text input primitive",
-    "dependencies": []
+    "files": ["InputBase.vue", "types.ts"]
   },
   "range-base": {
     "type": "components",
-    "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"],
-    "description": "Range slider primitive",
-    "dependencies": []
+    "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"]
   },
   "switch-base": {
     "type": "components",
-    "files": ["SwitchBase.vue"],
-    "description": "Toggle switch primitive",
-    "dependencies": []
+    "files": ["SwitchBase.vue"]
   },
   "tabs": {
     "type": "components",
@@ -52,14 +40,14 @@
       "TabsPanel.vue",
       "TabsTab.vue",
       "types.ts"
-    ],
-    "description": "Tab navigation components",
-    "dependencies": []
+    ]
+  },
+  "popover-base": {
+    "type": "components",
+    "files": ["context.ts", "PopoverBase.vue", "PopoverMenu.vue", "PopoverTrigger.vue", "types.ts"]
   },
   "use-theme": {
     "type": "composables",
-    "files": ["useTheme.ts"],
-    "description": "Composable theme switcher",
-    "dependencies": []
+    "files": ["useTheme.ts"]
   }
 }
