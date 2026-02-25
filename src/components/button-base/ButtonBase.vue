@@ -13,8 +13,8 @@ const {
   <component
     :is
     :class="['btn', shape, variant]"
-    :type="is === 'button' ? type : null"
     :aria-busy="isPending"
+    :type="is === 'button' ? type : null"
   >
     <slot>button</slot>
   </component>
@@ -54,13 +54,12 @@ const {
 .radius-default {
   border-radius: var(--radius-xl);
   padding-inline: 1.6rem;
-  aspect-ratio: 1;
   height: 4.8rem;
 }
 .radius-circle {
   border-radius: 5rem;
   padding: 1rem;
-  min-width: 5rem;
+  min-width: 4rem;
   aspect-ratio: 1;
 }
 .primary {
