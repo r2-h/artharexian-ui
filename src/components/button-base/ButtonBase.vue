@@ -98,15 +98,15 @@ const {
   background-color: inherit;
   &:hover:not(:disabled) {
     background-color: light-dark(
-      oklch(from var(--surface) calc(l * 0.975) c h),
+      oklch(from var(--surface) calc(l * 0.9) c h),
       oklch(from var(--surface) calc(l * 1.1) c h)
     );
   }
 }
 
 :deep(svg) {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   flex-shrink: 0;
 }
 </style>

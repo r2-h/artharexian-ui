@@ -2,20 +2,20 @@
 import { provide, readonly, ref } from 'vue'
 
 import { TabsKey } from './context'
+import type { TabsProps } from './types'
 
-const props = defineProps<{ defaultValue?: string }>()
-const activeTab = ref(props.defaultValue || '')
+const { defaultValue, variant = 'primary' } = defineProps<TabsProps>()
+const activeTab = ref(defaultValue || '')
 
 const setActiveTab = (value: string) => (activeTab.value = value)
 
 provide(TabsKey, {
+  variant,
   activeTab: readonly(activeTab),
   setActiveTab,
 })
 </script>
 
 <template>
-  <section class="tabs-base">
-    <slot />
-  </section>
+  <slot />
 </template>

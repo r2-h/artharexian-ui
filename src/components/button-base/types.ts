@@ -6,5 +6,5 @@ export type ButtonProps = {
   variant?: ButtonVariant
   shape?: ButtonShape
   type?: 'button' | 'submit' | 'reset'
-  is?: 'button' | 'a' | 'RouterLink'
+  is?: 'button' | 'a' | 'RouterLink' | 'div'
 }
