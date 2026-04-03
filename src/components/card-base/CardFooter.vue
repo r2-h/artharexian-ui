@@ -6,6 +6,7 @@
 
 <style scoped>
 .footer {
-  padding: 0 2.4rem 2.4rem 2.4rem;
+  padding: var(--card-base-padding);
+  padding-top: 0;
 }
 </style>

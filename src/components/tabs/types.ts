@@ -15,5 +15,4 @@ export type TabsProps = {
 
 export type TabsTabProps = {
   value: string
-  asChild?: boolean
 }

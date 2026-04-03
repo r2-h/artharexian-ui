@@ -1,10 +1,34 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { STYLES_FILES, cwd } from './constants.js'
+import { STYLES_FILES, GITHUB_RAW, cwd } from './constants.js'
 import { detectProject, loadConfig, saveConfig } from './utils/config.js'
 import { downloadItems } from './add.js'
+import { fetchFile } from './utils/fetch.js'
 import { log } from './utils/logger.js'
+
+async function downloadStyles(stylesDir) {
+  log.bold('\nAdding styles...')
+  fs.mkdirSync(stylesDir, { recursive: true })
+
+  for (const file of STYLES_FILES) {
+    const url = `${GITHUB_RAW}/src/styles/${file}`
+    const destPath = path.join(stylesDir, file)
+
+    if (fs.existsSync(destPath)) {
+      log.info(`Skipping ${path.relative(cwd, destPath)} (already exists)`)
+      continue
+    }
+
+    try {
+      const content = await fetchFile(url)
+      fs.writeFileSync(destPath, content)
+      log.success(`Added ${path.relative(cwd, destPath)}`)
+    } catch (err) {
+      log.error(`Failed to download ${file}: ${err.message}`)
+    }
+  }
+}
 
 export async function init(cmdOptions = {}) {
   const configPath = path.join(cwd, 'rxn-ui.json')
@@ -14,7 +38,8 @@ export async function init(cmdOptions = {}) {
     log.info(`
 Already initialized at ${configPath}
 Components: ${existing.components}
-Styles: ${existing.styles}`)
+Styles: ${existing.styles}
+Assets: ${existing.assets}`)
     return
   }
 
@@ -47,16 +72,13 @@ Styles: ${existing.styles}`)
 Configuration saved to ${configPath}
   Components: ${config.components}
   Styles: ${config.styles}
-  Composables: ${config.composables}`)
+  Composables: ${config.composables}
+  Assets: ${config.assets}
+  Utils: ${config.utils}`)
 
   // Download styles
   const stylesDir = path.join(cwd, config.styles)
-  await downloadItems({
-    type: 'styles',
-    componentName: null,
-    files: STYLES_FILES,
-    destDir: stylesDir,
-  })
+  await downloadStyles(stylesDir)
 
   log(`\nNow you can add components:
   npx rxn-ui add button-base`)

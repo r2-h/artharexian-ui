@@ -1,0 +1,7 @@
+{
+  "components": "components",
+  "composables": "composables",
+  "assets": "assets",
+  "utils": "utils",
+  "styles": "styles"
+}

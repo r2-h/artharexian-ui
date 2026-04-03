@@ -2,7 +2,6 @@ import type { Component } from 'vue'
 
 export type PopoverProps = {
   popoverId: string
-  asChild?: boolean
 }
 
 export type PopoverMenu = {

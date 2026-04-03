@@ -16,7 +16,10 @@
   },
   "checkbox-base": {
     "type": "components",
-    "files": ["CheckboxBase.vue"]
+    "files": ["CheckboxBase.vue"],
+    "dependencies": {
+      "assets": ["CheckIcon.vue"]
+    }
   },
   "input-base": {
     "type": "components",
@@ -24,7 +27,11 @@
   },
   "range-base": {
     "type": "components",
-    "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"]
+    "files": ["RangeBase.vue", "RangeOutput.vue", "types.ts"],
+    "dependencies": {
+      "composables": ["useVars.ts"],
+      "utils": ["cssParser.ts", "mergeDefaultProps.ts"]
+    }
   },
   "switch-base": {
     "type": "components",
@@ -44,7 +51,7 @@
   },
   "popover-base": {
     "type": "components",
-    "files": ["context.ts", "PopoverBase.vue", "PopoverMenu.vue", "PopoverTrigger.vue", "types.ts"]
+    "files": ["context.ts", "PopoverMenu.vue", "PopoverTrigger.vue", "types.ts"]
   },
   "use-theme": {
     "type": "composables",

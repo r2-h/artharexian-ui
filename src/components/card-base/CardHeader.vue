@@ -1,14 +1,14 @@
 <template>
-  <header class="header">
+  <header class="rxn-card-header">
     <slot />
   </header>
 </template>
 
-<style scoped>
-.header {
+<style>
+.rxn-card-header {
   display: flex;
   flex-direction: column;
-  padding: 2.4rem;
+  padding: var(--card-base-padding);
   row-gap: 0.6rem;
 }
 </style>

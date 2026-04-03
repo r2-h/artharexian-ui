@@ -4,4 +4,9 @@ export type InputProps = {
   error?: string
   defaultErrorMessage?: string
   isPending?: boolean
+  modelValue?: string
+}
+
+export type InputEmits = {
+  (e: 'update:modelValue', value: string): void
 }

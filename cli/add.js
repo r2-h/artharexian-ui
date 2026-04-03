@@ -7,6 +7,13 @@ import { fetchFile, fetchJSON } from './utils/fetch.js'
 import { getSourceUrl } from './utils/getSourceUrl.js'
 import { log } from './utils/logger.js'
 
+// Patterns to detect and rewrite import paths
+const IMPORT_PATTERNS = [
+  { type: 'assets', regex: /\.\.\/\.\.\/assets\//g },
+  { type: 'composables', regex: /\.\.\/\.\.\/composables\//g },
+  { type: 'utils', regex: /\.\.\/\.\.\/utils\//g },
+]
+
 export async function add(componentName, cmdOptions = {}) {
   const config = loadConfig()
   if (!config) {
@@ -39,13 +46,66 @@ export async function add(componentName, cmdOptions = {}) {
 
   log.bold(`\nAdding ${componentName}...`)
 
+  // Скачиваем зависимости (assets, composables, utils)
+  const depDirs = await downloadDependencies(entry, config)
+
   // Скачиваем файлы компонента
   await downloadItems({
     type: entry.type,
-    componentName: isMultipleFiles ? componentName : null,
+    componentName,
     files: entry.files,
     destDir,
   })
+
+  // Переписываем импорты в файлах компонента
+  rewriteImports(entry.files, destDir, depDirs, isMultipleFiles)
+}
+
+async function downloadDependencies(entry, config) {
+  const deps = entry.dependencies
+  if (!deps) return {}
+
+  const depDirs = {}
+
+  for (const [type, files] of Object.entries(deps)) {
+    const destDir = path.join(cwd, config[type])
+    depDirs[type] = destDir
+
+    await downloadItems({
+      type,
+      componentName: null,
+      files,
+      destDir,
+    })
+  }
+
+  return depDirs
+}
+
+function rewriteImports(files, destDir, depDirs, isMultipleFiles) {
+  for (const file of files) {
+    const filePath = path.join(destDir, file)
+    if (!fs.existsSync(filePath)) continue
+
+    let content = fs.readFileSync(filePath, 'utf8')
+
+    for (const { type, regex } of IMPORT_PATTERNS) {
+      if (!depDirs[type]) continue
+      if (!regex.test(content)) continue
+
+      // Reset regex lastIndex
+      regex.lastIndex = 0
+
+      // Calculate relative path from component file to dependency dir
+      const fileDir = isMultipleFiles ? destDir : path.dirname(filePath)
+      const relPath = path.relative(fileDir, depDirs[type]).replace(/\\/g, '/')
+      const importPath = relPath.startsWith('.') ? relPath : `./${relPath}`
+
+      content = content.replace(regex, `${importPath}/`)
+    }
+
+    fs.writeFileSync(filePath, content)
+  }
 }
 
 export async function downloadItems({ type, componentName, files, destDir }) {

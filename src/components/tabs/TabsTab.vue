@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { cloneVNode, computed, mergeProps, useSlots } from 'vue'
+import { computed } from 'vue'
 
 import { useTabsContext } from './context'
 
@@ -7,10 +7,7 @@ defineOptions({ inheritAttrs: false })
 
 const props = defineProps<{
   value: string
-  asChild?: boolean
 }>()
-
-const slots = useSlots()
 
 const { activeTab, setActiveTab, variant } = useTabsContext()
 
@@ -29,20 +26,7 @@ const sharedProps = computed(() => ({
 </script>
 
 <template>
-  <template v-if="asChild">
-    <component
-      :is="
-        () => {
-          const vnode = slots.default?.()[0]
-          if (!vnode) return null
-
-          return cloneVNode(vnode, mergeProps(vnode.props ?? {}, sharedProps))
-        }
-      "
-    />
-  </template>
-
-  <button v-else type="button" v-bind="sharedProps" :class="variant">
+  <button type="button" v-bind="sharedProps" :class="variant">
     <slot />
   </button>
 </template>

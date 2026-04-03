@@ -2,14 +2,9 @@
 import ChevronDoubleIcon from '@/assets/ChevronDoubleIcon.vue'
 
 import ButtonBase from '../button-base/ButtonBase.vue'
-import type { SidebarButtonEmit, SidebarButtonProps } from './types'
+import { useSidebarContext } from './sidebar-context'
 
-const { isExpanded } = defineProps<SidebarButtonProps>()
-const emit = defineEmits<SidebarButtonEmit>()
-
-function toggleSidebar() {
-  emit('update:isExpanded', !isExpanded)
-}
+const { isExpanded, toggleExpand } = useSidebarContext()
 </script>
 
 <template>
@@ -17,7 +12,7 @@ function toggleSidebar() {
     variant="ghost"
     shape="shape-icon"
     :class="['shrink-btn', { 'is-expanded': isExpanded }]"
-    @click="toggleSidebar"
+    @click="toggleExpand"
   >
     <ChevronDoubleIcon />
   </ButtonBase>
@@ -26,9 +21,8 @@ function toggleSidebar() {
 <style scoped>
 .shrink-btn {
   position: absolute;
-  z-index: 1;
-  top: 1.2rem;
-  background-color: inherit;
+
+  z-index: 2;
   transition: opacity 150ms ease-in-out;
   & svg {
     stroke-width: 2px;

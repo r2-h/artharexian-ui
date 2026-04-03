@@ -1,13 +1,27 @@
-import type { CSSProperties, Component } from 'vue'
+import type { CSSProperties, Component, Ref } from 'vue'
+
+export type SidebarContext = {
+  isExpanded: Readonly<Ref<boolean>>
+  toggleExpand: () => void
+  setExpanded: (value: boolean) => void
+  currentWidth: Readonly<Ref<number>>
+  setCurrentWidth: (value: number) => void
+}
 
 export type SidebarProps = {
   maxWidth?: number
-  currentWidth?: number
   withResize?: boolean
   defaultExpandButton?: DefaultSidebarBtnProps
   defaultHideButton?: DefaultSidebarBtnProps
   side?: 'left' | 'right'
-} & SidebarButtonProps
+}
+
+export type UseResize = Pick<SidebarContext, 'setCurrentWidth'> & {
+  withResize?: boolean
+  maxWidth: number
+  side?: 'left' | 'right'
+  isResizing: Ref<boolean>
+}
 
 export type DefaultSidebarBtnProps = {
   class?: string
@@ -15,12 +29,3 @@ export type DefaultSidebarBtnProps = {
   show?: boolean
   icon?: Component
 }
-
-export type SidebarEmits = SidebarButtonEmit & {
-  (evt: 'update:currentWidth', currentWidth: number): void
-}
-
-export type SidebarButtonProps = {
-  isExpanded: boolean
-}
-export type SidebarButtonEmit = (evt: 'update:isExpanded', isExpanded: boolean) => void

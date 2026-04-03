@@ -1,20 +1,43 @@
-<script setup lang="ts">
-import type { ButtonProps } from './types'
+<script setup lang="ts" generic="T extends Component | keyof HTMLElementTagNameMap = 'button'">
+import { type Component, computed } from 'vue'
+import { RouterLink } from 'vue-router'
+
+import type { BaseButtonProps } from './types'
 
 const {
   variant = 'default',
   shape = 'shape-default',
   is = 'button',
   type = 'button',
-} = defineProps<ButtonProps>()
+  ...props
+} = defineProps<BaseButtonProps>()
+
+const isNativeButton = computed(() => is === 'button')
+const isLink = computed(() => {
+  return is === 'a' || is === RouterLink
+})
+const needsButtonRole = computed(() => {
+  return !isNativeButton.value && !isLink.value
+})
+const onKeydown = (e: KeyboardEvent) => {
+  if (!needsButtonRole.value) return
+
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault()
+    ;(e.currentTarget as HTMLElement)?.click()
+  }
+}
 </script>
 
 <template>
   <component
     :is
+    v-bind="is === RouterLink ? props : {}"
     :class="['btn', shape, variant]"
-    :aria-busy="isPending"
-    :type="is === 'button' ? type : null"
+    :aria-busy="isLink ? $attrs.disabled : isPending"
+    :tabindex="needsButtonRole ? 0 : undefined"
+    :type="isNativeButton ? type : undefined"
+    @keydown="onKeydown"
   >
     <slot>button</slot>
   </component>
@@ -22,6 +45,9 @@ const {
 
 <style scoped>
 .btn {
+  --padding-button-sm: 0.5rem;
+
+  -webkit-tab-highlight-color: transparent;
   display: inline-flex;
   column-gap: 0.5rem;
   width: fit-content;
@@ -42,13 +68,13 @@ const {
   height: 4.8rem;
 }
 .shape-small {
-  padding: 0.5rem 1rem;
+  padding: var(--padding-button-sm) 1rem;
   border-radius: none;
 }
 .shape-icon {
   color: var(--foreground);
   border-radius: var(--radius-md);
-  padding: 0.5rem;
+  padding: var(--padding-button-sm);
   aspect-ratio: 1;
 }
 
@@ -98,8 +124,8 @@ const {
   background-color: inherit;
   &:hover:not(:disabled) {
     background-color: light-dark(
-      oklch(from var(--surface) calc(l * 0.9) c h),
-      oklch(from var(--surface) calc(l * 1.1) c h)
+      oklch(from var(--surface) calc(l * 0.98) c h),
+      oklch(from var(--surface) calc(l * 1.15) c h)
     );
   }
 }
@@ -108,5 +134,7 @@ const {
   width: 1.6rem;
   height: 1.6rem;
   flex-shrink: 0;
+  color: var(--foreground);
+  stroke: var(--foreground);
 }
 </style>

@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-export const GITHUB_REPO = 'r2-h/artharexian-ui'
+export const GITHUB_REPO = 'r2-h/rxn-ui'
 export const GITHUB_RAW = `https://raw.githubusercontent.com/${GITHUB_REPO}/main`
 
 export const cwd = process.env.INIT_CWD || process.cwd()

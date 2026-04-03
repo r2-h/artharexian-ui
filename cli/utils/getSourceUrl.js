@@ -8,7 +8,8 @@ export function getSourceUrl(type, componentName, file) {
     composables: componentName
       ? `/src/composables/${componentName}/${file}`
       : `/src/composables/${file}`,
-    styles: `/src/styles/${file}`,
+    assets: `/src/assets/${file}`,
+    utils: `/src/utils/${file}`,
   }
   return `${GITHUB_RAW}${paths[type]}`
 }

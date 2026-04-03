@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-withDefaults(defineProps<{ is?: 'div' | 'section' | 'ul' | 'main' | 'ol' | 'form' }>(), {
-  is: 'main',
-})
+const { is = 'main' } = defineProps<{ is?: 'div' | 'section' | 'ul' | 'main' | 'ol' | 'form' }>()
 </script>
 
 <template>
@@ -12,6 +10,7 @@ withDefaults(defineProps<{ is?: 'div' | 'section' | 'ul' | 'main' | 'ol' | 'form
 
 <style scoped>
 .content {
-  padding: 0 2.4rem 2.4rem 2.4rem;
+  padding: var(--card-base-padding);
+  padding-top: 0;
 }
 </style>

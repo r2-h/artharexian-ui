@@ -1,10 +1,22 @@
-export type ButtonVariant = 'primary' | 'default' | 'danger' | 'ghost'
-export type ButtonShape = 'shape-default' | 'shape-icon' | 'shape-small'
+import { RouterLink } from 'vue-router'
+import type { RouterLinkProps } from 'vue-router'
 
-export type ButtonProps = {
+type BaseProps = {
   isPending?: boolean
-  variant?: ButtonVariant
-  shape?: ButtonShape
+  variant?: 'primary' | 'default' | 'danger' | 'ghost'
+  shape?: 'shape-default' | 'shape-icon' | 'shape-small'
   type?: 'button' | 'submit' | 'reset'
-  is?: 'button' | 'a' | 'RouterLink' | 'div'
 }
+
+type NativeButtonProps = BaseProps & {
+  is?: 'button' | 'a' | 'div' | 'li'
+  type?: 'button' | 'submit' | 'reset'
+  to?: never
+}
+
+type RouterButtonProps = BaseProps & {
+  is?: typeof RouterLink
+  type?: never
+} & RouterLinkProps
+
+export type BaseButtonProps = NativeButtonProps | RouterButtonProps
