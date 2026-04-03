@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { STYLES_FILES, cwd, getRegistryUrl } from './constants.js'
+import { cwd, getRegistryUrl } from './constants.js'
 import { loadConfig } from './utils/config.js'
 import { fetchFile, fetchJSON } from './utils/fetch.js'
 import { getSourceUrl } from './utils/getSourceUrl.js'
@@ -14,8 +14,7 @@ export async function add(componentName, cmdOptions = {}) {
     process.exit(1)
   }
 
-  const tag = cmdOptions.tag || null
-  const registryUrl = getRegistryUrl(tag)
+  const registryUrl = getRegistryUrl()
 
   let registry
   try {
@@ -45,28 +44,22 @@ export async function add(componentName, cmdOptions = {}) {
     type: entry.type,
     componentName: isMultipleFiles ? componentName : null,
     files: entry.files,
-    tag,
     destDir,
-  })
-
-  // Скачиваем стили
-  const stylesDir = path.join(cwd, config.styles)
-  await downloadItems({
-    type: 'styles',
-    componentName: null,
-    files: STYLES_FILES,
-    tag,
-    destDir: stylesDir,
   })
 }
 
-async function downloadItems({ type, componentName, files, tag, destDir }) {
+export async function downloadItems({ type, componentName, files, destDir }) {
   log.bold(`\nAdding ${type}...`)
   fs.mkdirSync(destDir, { recursive: true })
 
   for (const file of files) {
-    const url = getSourceUrl(type, componentName, file, tag)
+    const url = getSourceUrl(type, componentName, file)
     const destPath = path.join(destDir, file)
+
+    if (fs.existsSync(destPath)) {
+      log.info(`Skipping ${path.relative(cwd, destPath)} (already exists)`)
+      continue
+    }
 
     try {
       const content = await fetchFile(url)

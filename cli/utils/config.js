@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const cwd = process.env.INIT_CWD || process.cwd()
+import { cwd } from '../constants.js'
 
 export function loadConfig() {
   const configPath = path.join(cwd, 'rxn-ui.json')
@@ -20,7 +20,6 @@ export function detectProject() {
   const hasSrc = fs.existsSync(path.join(cwd, 'src'))
   return {
     components: hasSrc ? 'src/shared/components' : 'components',
-    styles: hasSrc ? 'src/app/styles' : 'styles',
     composables: hasSrc ? 'src/shared/composables' : 'composables',
   }
 }

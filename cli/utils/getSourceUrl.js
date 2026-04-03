@@ -1,7 +1,6 @@
 import { GITHUB_RAW } from '../constants.js'
 
-export function getSourceUrl(type, componentName, file, tag) {
-  const ref = tag ? `?ref=${tag}` : ''
+export function getSourceUrl(type, componentName, file) {
   const paths = {
     components: componentName
       ? `/src/components/${componentName}/${file}`
@@ -11,5 +10,5 @@ export function getSourceUrl(type, componentName, file, tag) {
       : `/src/composables/${file}`,
     styles: `/src/styles/${file}`,
   }
-  return `${GITHUB_RAW}${paths[type]}${ref}`
+  return `${GITHUB_RAW}${paths[type]}`
 }

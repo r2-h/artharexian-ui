@@ -3,12 +3,9 @@ import { fetchJSON } from './utils/fetch.js'
 import { log } from './utils/logger.js'
 
 export async function list(cmdOptions = {}) {
-  const tag = cmdOptions.tag || null
-  const registryUrl = getRegistryUrl(tag)
-
   let registry
   try {
-    registry = await fetchJSON(registryUrl)
+    registry = await fetchJSON(getRegistryUrl())
   } catch (err) {
     log.error(`Failed to fetch registry: ${err.message}`)
     process.exit(1)

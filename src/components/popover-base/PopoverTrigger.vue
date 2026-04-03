@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { usePopoverContext } from './context'
+import { computed } from 'vue'
 
-const { popoverId } = usePopoverContext()
+import { useClone } from '../../composables/useClone'
+import type { PopoverProps } from './types'
+
+const { popoverId, asChild = false } = defineProps<PopoverProps>()
+
+const sharedProps = computed(() => ({
+  popovertarget: popoverId,
+  style: { anchorName: `--${popoverId}` },
+}))
+
+const clone = useClone(sharedProps.value)
 </script>
 
 <template>
-  <button :popovertarget="popoverId" :style="{ anchorName: `--${popoverId}` }">
-    <slot />
+  <component v-if="asChild" :is="clone()" />
+
+  <button v-else v-bind="sharedProps">
+    <slot> Popover trigger</slot>
   </button>
 </template>

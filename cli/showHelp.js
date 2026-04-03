@@ -14,8 +14,6 @@ ${colors.bold}Commands:${colors.reset}
   help              Show this help message
 
 ${colors.bold}Options:${colors.reset}
-  --tag <version>      Use a specific version from GitHub
-  --overwrite          Overwrite existing config (for init)
   --components <path>  Custom components directory
   --styles <path>      Custom styles directory
   --composables <path> Custom composables directory
@@ -23,7 +21,6 @@ ${colors.bold}Options:${colors.reset}
 ${colors.bold}Examples:${colors.reset}
   npx rxn-ui init
   npx rxn-ui add button-base
-  npx rxn-ui add card-base --tag v0.4.6
   npx rxn-ui list
 `)
 }
