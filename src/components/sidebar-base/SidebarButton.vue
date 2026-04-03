@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import ChevronDoubleIcon from '@/assets/ChevronDoubleIcon.vue'
-
+import ChevronDoubleIcon from '../../assets/ChevronDoubleIcon.vue'
 import ButtonBase from '../button-base/ButtonBase.vue'
 import { useSidebarContext } from './sidebar-context'
 

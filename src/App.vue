@@ -2,7 +2,6 @@
 import ButtonBase from './components/button-base/ButtonBase.vue'
 import CardBase from './components/card-base/CardBase.vue'
 import CardContent from './components/card-base/CardContent.vue'
-import CardDescription from './components/card-base/CardDescription.vue'
 import CardFooter from './components/card-base/CardFooter.vue'
 import CardHeader from './components/card-base/CardHeader.vue'
 import CardTitle from './components/card-base/CardTitle.vue'
@@ -36,7 +35,6 @@ import ThemeToggle from './components/theme-toggle/ThemeToggle.vue'
         <CardBase>
           <CardHeader>
             <CardTitle>This is my title</CardTitle>
-            <CardDescription>This is a price of my product</CardDescription>
           </CardHeader>
           <CardContent as="ul">
             <li>This is one benefit</li>

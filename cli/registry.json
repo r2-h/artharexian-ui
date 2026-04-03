@@ -33,6 +33,21 @@
       "utils": ["cssParser.ts", "mergeDefaultProps.ts"]
     }
   },
+  "sidebar-base": {
+    "type": "components",
+    "files": [
+      "SidebarBase.vue",
+      "SidebarButton.vue",
+      "sidebar-context.ts",
+      "use-resize.ts",
+      "types.ts"
+    ],
+    "dependencies": {
+      "assets": ["ChevronDoubleIcon.vue"],
+      "composables": ["useRefWithLocalStorage.ts"]
+    },
+    "components": ["button-base"]
+  },
   "switch-base": {
     "type": "components",
     "files": ["SwitchBase.vue"]

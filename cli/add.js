@@ -10,8 +10,10 @@ import { log } from './utils/logger.js'
 // Patterns to detect and rewrite import paths
 const IMPORT_PATTERNS = [
   { type: 'assets', regex: /\.\.\/\.\.\/assets\//g },
+  { type: 'assets', regex: /@\/assets\//g },
   { type: 'composables', regex: /\.\.\/\.\.\/composables\//g },
   { type: 'utils', regex: /\.\.\/\.\.\/utils\//g },
+  { type: 'components', regex: /\.\.\/([\w-]+)\//g },
 ]
 
 export async function add(componentName, cmdOptions = {}) {
@@ -49,6 +51,18 @@ export async function add(componentName, cmdOptions = {}) {
   // Скачиваем зависимости (assets, composables, utils)
   const depDirs = await downloadDependencies(entry, config)
 
+  // Скачиваем компонентные зависимости
+  if (entry.components) {
+    for (const compName of entry.components) {
+      const compEntry = registry[compName]
+      if (!compEntry) {
+        log.error(`Dependency "${compName}" not found`)
+        continue
+      }
+      await addDependency(compName, compEntry, config)
+    }
+  }
+
   // Скачиваем файлы компонента
   await downloadItems({
     type: entry.type,
@@ -59,6 +73,29 @@ export async function add(componentName, cmdOptions = {}) {
 
   // Переписываем импорты в файлах компонента
   rewriteImports(entry.files, destDir, depDirs, isMultipleFiles)
+}
+
+async function addDependency(compName, compEntry, config) {
+  const isMultipleFiles = compEntry.files.length > 1
+  const destDir = isMultipleFiles
+    ? path.join(cwd, config[compEntry.type], compName)
+    : path.join(cwd, config[compEntry.type])
+
+  log.bold(`\nAdding dependency ${compName}...`)
+
+  // Скачиваем зависимости компонента
+  const depDirs = await downloadDependencies(compEntry, config)
+
+  // Скачиваем файлы
+  await downloadItems({
+    type: compEntry.type,
+    componentName: compName,
+    files: compEntry.files,
+    destDir,
+  })
+
+  // Переписываем импорты
+  rewriteImports(compEntry.files, destDir, depDirs, isMultipleFiles)
 }
 
 async function downloadDependencies(entry, config) {
@@ -91,9 +128,11 @@ function rewriteImports(files, destDir, depDirs, isMultipleFiles) {
 
     for (const { type, regex } of IMPORT_PATTERNS) {
       if (!depDirs[type]) continue
-      if (!regex.test(content)) continue
 
       // Reset regex lastIndex
+      regex.lastIndex = 0
+
+      if (!regex.test(content)) continue
       regex.lastIndex = 0
 
       // Calculate relative path from component file to dependency dir
@@ -101,7 +140,14 @@ function rewriteImports(files, destDir, depDirs, isMultipleFiles) {
       const relPath = path.relative(fileDir, depDirs[type]).replace(/\\/g, '/')
       const importPath = relPath.startsWith('.') ? relPath : `./${relPath}`
 
-      content = content.replace(regex, `${importPath}/`)
+      if (type === 'components') {
+        // For component imports like ../button-base/ -> ./button-base/
+        content = content.replace(regex, (match, compName) => {
+          return `${importPath}/${compName}/`
+        })
+      } else {
+        content = content.replace(regex, `${importPath}/`)
+      }
     }
 
     fs.writeFileSync(filePath, content)
