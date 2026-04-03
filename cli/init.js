@@ -3,7 +3,6 @@ import path from 'node:path'
 
 import { STYLES_FILES, GITHUB_RAW, cwd } from './constants.js'
 import { detectProject, loadConfig, saveConfig } from './utils/config.js'
-import { downloadItems } from './add.js'
 import { fetchFile } from './utils/fetch.js'
 import { log } from './utils/logger.js'
 
@@ -30,6 +29,18 @@ async function downloadStyles(stylesDir) {
   }
 }
 
+function getDefaultStylesDir() {
+  const hasSrc = fs.existsSync(path.join(cwd, 'src'))
+  const base = hasSrc ? 'src/app/styles' : 'styles'
+  const stylesPath = path.join(cwd, base)
+
+  if (fs.existsSync(stylesPath)) {
+    const dir = path.dirname(base)
+    return path.join(dir, 'rxn-styles')
+  }
+  return base
+}
+
 export async function init(cmdOptions = {}) {
   const configPath = path.join(cwd, 'rxn-ui.json')
 
@@ -38,7 +49,6 @@ export async function init(cmdOptions = {}) {
     log.info(`
 Already initialized at ${configPath}
 Components: ${existing.components}
-Styles: ${existing.styles}
 Assets: ${existing.assets}`)
     return
   }
@@ -48,22 +58,14 @@ Assets: ${existing.assets}`)
   if (cmdOptions.components) {
     config.components = cmdOptions.components
   }
-  if (cmdOptions.styles) {
-    config.styles = cmdOptions.styles
-  } else {
-    config.styles = 'styles'
-  }
   if (cmdOptions.composables) {
     config.composables = cmdOptions.composables
   }
-
-  // Check if styles dir exists, use 'rxn-styles' prefix to avoid conflicts
-  const stylesPath = path.join(cwd, config.styles)
-  if (fs.existsSync(stylesPath)) {
-    const base = path.basename(config.styles)
-    const dir = path.dirname(config.styles)
-    config.styles = path.join(dir, `rxn-${base}`)
-    log.info(`Styles directory "${config.styles}" (prefixed to avoid conflict)`)
+  if (cmdOptions.assets) {
+    config.assets = cmdOptions.assets
+  }
+  if (cmdOptions.utils) {
+    config.utils = cmdOptions.utils
   }
 
   saveConfig(config)
@@ -71,13 +73,12 @@ Assets: ${existing.assets}`)
   log(`\n
 Configuration saved to ${configPath}
   Components: ${config.components}
-  Styles: ${config.styles}
   Composables: ${config.composables}
   Assets: ${config.assets}
   Utils: ${config.utils}`)
 
-  // Download styles
-  const stylesDir = path.join(cwd, config.styles)
+  // Download styles to default location
+  const stylesDir = path.join(cwd, getDefaultStylesDir())
   await downloadStyles(stylesDir)
 
   log(`\nNow you can add components:

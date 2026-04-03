@@ -15,8 +15,9 @@ ${colors.bold}Commands:${colors.reset}
 
 ${colors.bold}Options:${colors.reset}
   --components <path>  Custom components directory
-  --styles <path>      Custom styles directory
   --composables <path> Custom composables directory
+  --assets <path>      Custom assets directory
+  --utils <path>       Custom utils directory
 
 ${colors.bold}Examples:${colors.reset}
   npx rxn-ui init

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import ErrorIcon from '@/assets/ErrorIcon.vue'
-import InfoIcon from '@/assets/InfoIcon.vue'
-import SuccessIcon from '@/assets/SuccessIcon.vue'
-import UndoIcon from '@/assets/UndoIcon.vue'
-import WarningIcon from '@/assets/WarningIcon.vue'
-import XMarkIcon from '@/assets/XMarkIcon.vue'
-
+import InfoIcon from '../../assets/InfoIcon.vue'
+import SuccessIcon from '../../assets/SuccessIcon.vue'
+import UndoIcon from '../../assets/UndoIcon.vue'
+import WarningIcon from '../../assets/WarningIcon.vue'
+import XMarkIcon from '../../assets/XMarkIcon.vue'
 import ButtonBase from '../button-base/ButtonBase.vue'
 import { useNotification } from './notification'
 import type { NotificationItemProps } from './types'
