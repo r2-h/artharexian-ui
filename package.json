@@ -1,7 +1,7 @@
 {
   "name": "rxn-ui",
   "description": "Vue 3 UI component library",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "MIT",
   "private": false,
   "type": "module",
