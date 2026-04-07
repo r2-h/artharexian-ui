@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ErrorIcon from '../../assets/ErrorIcon.vue'
 import InfoIcon from '../../assets/InfoIcon.vue'
 import SuccessIcon from '../../assets/SuccessIcon.vue'
 import UndoIcon from '../../assets/UndoIcon.vue'

@@ -40,11 +40,8 @@ export async function add(componentName, cmdOptions = {}) {
     process.exit(1)
   }
 
-  // Если файлов больше одного — скачиваем в папку с именем компонента
-  const isMultipleFiles = entry.files.length > 1
-  const destDir = isMultipleFiles
-    ? path.join(cwd, config[entry.type], componentName)
-    : path.join(cwd, config[entry.type])
+  // Скачиваем в папку с именем компонента
+  const destDir = path.join(cwd, config[entry.type], componentName)
 
   log.bold(`\nAdding ${componentName}...`)
 
@@ -72,14 +69,11 @@ export async function add(componentName, cmdOptions = {}) {
   })
 
   // Переписываем импорты в файлах компонента
-  rewriteImports(entry.files, destDir, depDirs, isMultipleFiles)
+  rewriteImports(entry.files, destDir, depDirs)
 }
 
 async function addDependency(compName, compEntry, config) {
-  const isMultipleFiles = compEntry.files.length > 1
-  const destDir = isMultipleFiles
-    ? path.join(cwd, config[compEntry.type], compName)
-    : path.join(cwd, config[compEntry.type])
+  const destDir = path.join(cwd, config[compEntry.type], compName)
 
   log.bold(`\nAdding dependency ${compName}...`)
 
@@ -95,7 +89,7 @@ async function addDependency(compName, compEntry, config) {
   })
 
   // Переписываем импорты
-  rewriteImports(compEntry.files, destDir, depDirs, isMultipleFiles)
+  rewriteImports(compEntry.files, destDir, depDirs)
 }
 
 async function downloadDependencies(entry, config) {
@@ -119,7 +113,7 @@ async function downloadDependencies(entry, config) {
   return depDirs
 }
 
-function rewriteImports(files, destDir, depDirs, isMultipleFiles) {
+function rewriteImports(files, destDir, depDirs) {
   for (const file of files) {
     const filePath = path.join(destDir, file)
     if (!fs.existsSync(filePath)) continue
@@ -136,8 +130,8 @@ function rewriteImports(files, destDir, depDirs, isMultipleFiles) {
       regex.lastIndex = 0
 
       // Calculate relative path from component file to dependency dir
-      const fileDir = isMultipleFiles ? destDir : path.dirname(filePath)
-      const relPath = path.relative(fileDir, depDirs[type]).replace(/\\/g, '/')
+      // All components are now in their own folder, so use destDir
+      const relPath = path.relative(destDir, depDirs[type]).replace(/\\/g, '/')
       const importPath = relPath.startsWith('.') ? relPath : `./${relPath}`
 
       if (type === 'components') {

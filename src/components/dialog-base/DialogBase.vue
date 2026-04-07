@@ -1,78 +1,69 @@
 <script setup lang="ts">
-import { useTemplateRef, watchEffect } from 'vue';
+import { onMounted, onUnmounted } from 'vue'
+import type { DialogBaseProps } from './types'
 
-import type { DialogBaseEmits, DialogBaseProps } from './types';
+const { closedby = 'any', portal = 'body' } = defineProps<DialogBaseProps>()
 
-const { closedby = 'any', id, isOpen, portal = 'body', cls } = defineProps<DialogBaseProps>()
-const emit = defineEmits<DialogBaseEmits>()
+const isOpen = defineModel<boolean>({ required: true })
+
 defineOptions({ inheritAttrs: false })
 
-const dialogRef = useTemplateRef('dialogRef')
-
-function onNativeClose() {
-  emit('onClose')
-}
-function open() {
-  dialogRef.value?.showModal()
-  emit('onOpen')
-}
 function close() {
-  dialogRef.value?.close()
-  onNativeClose()
-}
-function toggle() {
-  if (dialogRef.value?.open) close()
-  else open()
+  isOpen.value = false
 }
 
-defineExpose({ open, close, toggle })
-
-if (isOpen !== undefined) {
-  watchEffect(() => {
-    if (isOpen && !dialogRef.value?.open) open()
-    if (!isOpen && dialogRef.value?.open) close()
-  })
+function onBackdropClick() {
+  if (closedby === 'any') close()
 }
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && closedby === 'any') close()
+}
+onMounted(() => {
+  document.addEventListener('keydown', onKeydown)
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeydown)
+})
 </script>
 
 <template>
-  <Teleport :to="portal" :disabled="!portal">
-    <dialog
-      v-bind="$attrs"
-      ref="dialogRef"
-      :class="['rxn-dialog', cls]"
-      :closedby
-      :id
-      @close="onNativeClose"
-    >
-      <slot :close="close">
-        <p>Default modal</p>
-        <button @click="close">Close</button>
-      </slot>
-    </dialog>
+  <Teleport v-if="isOpen" :to="portal">
+    <div class="rxn-dialog-overlay">
+      <div class="rxn-dialog-backdrop" @click="onBackdropClick" />
+      <div class="rxn-dialog-content" v-bind="$attrs">
+        <slot :close="close">
+          <p>Default modal</p>
+          <button @click="close">Close</button>
+        </slot>
+      </div>
+    </div>
   </Teleport>
 </template>
 
 <style>
-.rxn-dialog {
+.rxn-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rxn-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: light-dark(oklch(from black l c h / 0.5), oklch(from black l c h / 0.8));
+  backdrop-filter: blur(1px);
+}
+
+.rxn-dialog-content {
+  position: relative;
   width: 100%;
-  background-color: transparent;
-  overflow: initial;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  &::backdrop {
-    background-color: light-dark(oklch(from black l c h / 0.5), oklch(from black l c h / 0.8));
-  }
 
   @media (450px < width) {
     width: fit-content;
-  }
-}
-
-[data-theme='light'] .rxn-dialog {
-  &::backdrop {
-    backdrop-filter: blur(1px);
   }
 }
 </style>

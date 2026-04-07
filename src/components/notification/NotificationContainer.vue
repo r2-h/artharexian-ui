@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
 import NotificationItem from './NotificationItem.vue'
 import { notifications, removingIds } from './notification'
 import type { NotificationContainerProps } from './types'
@@ -29,7 +28,7 @@ const filteredNotifications = computed(() =>
   --rxn-notification-gap: 1.2rem;
 
   position: fixed;
-  z-index: 3;
+  z-index: 11;
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
