@@ -1,28 +1,55 @@
 <script setup lang="ts">
-import type { PopoverMenu } from './types'
+import { useTemplateRef } from 'vue'
+
+import type { PopoverMenu, PopoverOption } from './types'
 
 const { options = [], popoverId } = defineProps<PopoverMenu>()
+
+const popoverElement = useTemplateRef('popoverElement')
+
+function onClick(option: PopoverOption) {
+  option.handler()
+  if (option.closeOnClick !== false) hidePopover()
+}
+
+function showPopover() {
+  popoverElement.value?.showPopover()
+}
+function hidePopover() {
+  popoverElement.value?.hidePopover()
+}
+function togglePopover() {
+  popoverElement.value?.togglePopover()
+}
+
+defineExpose({ showPopover, togglePopover, hidePopover })
 </script>
 
 <template>
-  <div popover :id="popoverId" :style="{ positionAnchor: `--${popoverId}` }" class="menu">
-    <slot name="popover">
+  <div
+    ref="popoverElement"
+    popover
+    :id="popoverId"
+    :style="{ positionAnchor: `--${popoverId}` }"
+    class="rxn-popover-menu"
+  >
+    <slot>
       <button
         v-for="op in options"
-        :key="op.action"
-        class="button"
-        :command="op.closeOnClick ? 'hide-popover' : ''"
+        :key="op.title"
+        class="rxn-popover-button"
+        :command="op.closeOnClick === false ? '' : 'hide-popover'"
         :commandfor="popoverId"
-        @click="op.handler"
+        @click="onClick(op)"
       >
-        <component v-if="op.icon" :is="op.icon" class="icon" />
-        {{ op.action }}
+        <component v-if="op.icon" :is="op.icon" class="rxn-popover-icon" />
+        {{ op.title }}
       </button>
     </slot>
   </div>
 </template>
 
-<style scoped>
+<style>
 [popover] {
   opacity: 0;
   transition:
@@ -52,7 +79,7 @@ const { options = [], popoverId } = defineProps<PopoverMenu>()
   margin-bottom: 1rem;
 }
 
-.menu {
+.rxn-popover-menu {
   position-area: bottom;
   position-try-fallbacks:
     flip-block, flip-inline, --bottom-left, --bottom-right, --top-right, --top-left;
@@ -65,7 +92,7 @@ const { options = [], popoverId } = defineProps<PopoverMenu>()
   color: var(--foreground);
   min-width: 10rem;
 }
-.button {
+.rxn-popover-button {
   background-color: inherit;
   cursor: pointer;
   display: flex;
@@ -76,18 +103,8 @@ const { options = [], popoverId } = defineProps<PopoverMenu>()
     margin-top: 1.5rem;
   }
 }
-.icon {
+.rxn-popover-icon {
   width: 1.8rem;
   aspect-ratio: 1;
 }
-
-/* 
-<ul id="popover--comments" popover="hint" style="position-anchor: --comments; position-area: top">
-    <li>Jenny Smith</li>
-    <li>Mia Apple</li>
-</ul>
-
-#popover--comments { background: light-dark(#000000c4, #616176); color: white; border-radius:
-0.25rem; font-size: 80%; } 
-*/
 </style>
