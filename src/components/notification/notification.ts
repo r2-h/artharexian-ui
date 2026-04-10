@@ -1,40 +1,37 @@
 import { ref } from 'vue'
-
 import type { NotificationState, UseNotificationOptions } from './types'
 
 let id = 0
 export const notifications = ref<NotificationState[]>([])
 export const removingIds = ref<Set<number>>(new Set())
+const timers = new Map<number, ReturnType<typeof setTimeout>>()
 
 export function useNotification() {
-  function notify(
-    message: string,
-    {
-      type = 'info',
-      side = 'top-right',
-      duration = 3000,
-      description,
-      undoHandler,
-    }: UseNotificationOptions,
-  ) {
+  function notify(message: string, options: UseNotificationOptions | undefined) {
+    const duration = options?.duration ?? 3500
     const n: NotificationState = {
       id: ++id,
       message,
-      type,
       duration,
-      description,
-      side,
-      undoHandler,
+      type: options?.type ?? 'info',
+      description: options?.description,
+      side: options?.side ?? 'top-right',
+      undoHandler: options?.undoHandler,
     }
 
     notifications.value.push(n)
 
-    if (duration) {
-      setTimeout(() => remove(n.id), duration)
-    }
+    const timerId = setTimeout(() => remove(n.id), duration)
+    timers.set(n.id, timerId)
   }
 
   function remove(id: number) {
+    const timer = timers.get(id)
+    if (timer) {
+      clearTimeout(timer)
+      timers.delete(id)
+    }
+
     removingIds.value.add(id)
 
     setTimeout(() => {
