@@ -7,7 +7,7 @@ export const removingIds = ref<Set<number>>(new Set())
 const timers = new Map<number, ReturnType<typeof setTimeout>>()
 
 export function useNotification() {
-  function notify(message: string, options: UseNotificationOptions | undefined) {
+  function notify(message: string, options?: UseNotificationOptions ) {
     const duration = options?.duration ?? 3500
     const n: NotificationState = {
       id: ++id,
